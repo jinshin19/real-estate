@@ -48,6 +48,9 @@ export class User {
 
   @Prop({ type: String, default: null })
   public readonly password?: string | null;
+
+  @Prop({ type: Boolean, default: false })
+  public readonly isDeleted!: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

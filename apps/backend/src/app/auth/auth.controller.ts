@@ -1,8 +1,10 @@
-import { Body, Controller, HttpCode, Post } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { AuthService } from "./auth.service";
+// NestJs Imports
 import { JoiPipe } from "nestjs-joi";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, HttpCode, Post } from "@nestjs/common";
+// Modules
 import { RegisterDTO } from "./dto";
+import { AuthService } from "./auth.service";
 
 // @ApiBearerAuth("")
 @ApiTags("Auth")

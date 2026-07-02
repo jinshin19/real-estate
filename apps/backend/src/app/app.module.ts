@@ -1,12 +1,17 @@
 // NestJs Imports
 import * as mongoose from "mongoose";
+import { APP_FILTER } from "@nestjs/core";
 import { ConfigModule } from "@nestjs/config";
 import { Inject, Module, OnModuleInit } from "@nestjs/common";
 import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
+// Shared
+import {
+  // Decorators
+  HttpExceptionFilter,
+} from "@crud1/shared";
 // Modules
 import { AuthModule } from "./auth/auth.module";
-import { HttpExceptionFilter } from "@crud1/shared";
-import { APP_FILTER } from "@nestjs/core";
+import { UsersModule } from "./users/users.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +21,7 @@ import { APP_FILTER } from "@nestjs/core";
     MongooseModule.forRoot(process.env.CRUD1_DATABASE_CONNECTION_1!),
     // Modules
     AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [
