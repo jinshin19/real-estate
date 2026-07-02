@@ -51,4 +51,4 @@ export class Reservation {
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);
 
-export type ReservationType = (typeof ReservationStatusC)[number];
+export type ReservationStatusT = (typeof ReservationStatusC)[number];

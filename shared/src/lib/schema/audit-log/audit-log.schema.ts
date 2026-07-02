@@ -25,10 +25,13 @@ export class AuditLogs {
   public collectionId!: string;
 
   @Prop({ type: String, required: true })
-  public collectName!: string;
+  public collectionName!: string;
 
   @Prop({ type: String, enum: AuditLogActionsC, required: true })
   public action!: AuditLogActionsT;
+
+  @Prop({ type: String, required: true })
+  public field!: string;
 
   @Prop({ type: String, default: null })
   public oldValue?: string | null;
@@ -40,6 +43,6 @@ export class AuditLogs {
   public userAgent!: string;
 }
 
-export const AuditLogSchema = SchemaFactory.createForClass(AuditLogs);
+export const AuditLogsSchema = SchemaFactory.createForClass(AuditLogs);
 
 export type AuditLogActionsT = (typeof AuditLogActionsC)[number];

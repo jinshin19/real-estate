@@ -1,8 +1,8 @@
 // Constants
 export const PropertyStatusC = [
   "sold",
-  "available",
   "reserved",
+  "available",
   "unavailable",
 ] as const;
 
@@ -35,19 +35,20 @@ export class Property {
   @Prop({ type: String, required: true })
   public readonly houseModelId!: string;
 
-  @Prop({ type: String, required: true })
-  public readonly price!: string;
+  @Prop({ type: Number, required: true })
+  public readonly price!: number;
 
-  @Prop({ type: String, required: true })
-  public readonly reservationFee!: string;
+  @Prop({ type: Number, required: true })
+  public readonly reservationFee!: number;
 
   @Prop({ type: String, enum: PropertyStatusC, required: true })
   public readonly status!: PropertyStatusT;
 
-  @Prop({ type: String, required: true })
-  public readonly isFeatured!: string;
-  @Prop({ type: String, required: true })
-  public readonly isPublished!: string;
+  @Prop({ type: Boolean, default: false })
+  public readonly isFeatured!: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  public readonly isPublished!: boolean;
 
   @Prop({ type: String, required: true })
   public readonly location!: PropertyLocationI;
@@ -65,9 +66,9 @@ export class Property {
   public readonly createdBy!: string;
 }
 
-export const Propertychema = SchemaFactory.createForClass(Property);
+export const PropertySchema = SchemaFactory.createForClass(Property);
 
-interface PropertyLocationI {
+export interface PropertyLocationI {
   country: string;
   province?: string | null;
   city?: string | null;
@@ -80,7 +81,7 @@ interface PropertyLocationI {
   longitude?: string | null;
 }
 
-interface PropertySpecficationI {
+export interface PropertySpecficationI {
   lotArea: string;
   floodArea: string;
   bedrooms: number;

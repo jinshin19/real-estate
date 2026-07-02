@@ -4,13 +4,14 @@ import { InjectModel } from "@nestjs/mongoose";
 import { HttpStatus, Injectable } from "@nestjs/common";
 // Shared
 import {
+  // Schema
+  User,
+  // Constants
   RESPONSE_MESSAGES,
   // Interfaces
   type ResponseHandlerI,
   // Handler
   ResponseHandlerService,
-  // Schema
-  User,
 } from "@crud1/shared";
 // DTO's
 import { RegisterDTO } from "./dto";

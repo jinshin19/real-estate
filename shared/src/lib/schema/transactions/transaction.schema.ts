@@ -52,6 +52,9 @@ export class Transaction {
 
   @Prop({ type: String, required: true })
   public paidAt!: string;
+
+  @Prop({ type: Boolean, default: false })
+  public isDeleted!: boolean;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
