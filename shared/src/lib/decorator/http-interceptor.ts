@@ -24,7 +24,7 @@ export class HttpInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
-        response.getResponse().status(data?.status || 500);
+        response.status(data?.status || 500);
         return ResponseHandlerService({
           status: data?.status,
           success: false,

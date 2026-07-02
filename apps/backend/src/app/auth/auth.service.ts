@@ -1,9 +1,10 @@
 // NestJs Imports
 import { Model } from "mongoose";
-import { HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import { HttpStatus, Injectable } from "@nestjs/common";
 // Shared
 import {
+  RESPONSE_MESSAGES,
   // Interfaces
   type ResponseHandlerI,
   // Handler
@@ -23,15 +24,8 @@ export class AuthService {
 
   private readonly serviceName = "AuthService";
 
-  public async login() {
-    try {
-      //
-    } catch (error) {
-      console.log("login", error);
-    }
-  }
-
   public async register(payload: RegisterDTO): Promise<ResponseHandlerI> {
+    const methodName = this.register.name;
     try {
       await this.user.create({
         firstName: payload.firstName,
@@ -49,15 +43,15 @@ export class AuthService {
       return ResponseHandlerService({
         status: HttpStatus.CREATED,
         success: true,
-        message: "Registered Successfully",
+        message: RESPONSE_MESSAGES.SUCCESS.REGISTERED,
       });
     } catch (error: unknown) {
       return ResponseHandlerService({
-        status: HttpStatus.BAD_REQUEST,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
         success: false,
-        message: "Failed to register user",
+        message: RESPONSE_MESSAGES.ERROR.INTERNAL_SERVER_ERROR,
         errorDetails: {
-          name: this.serviceName,
+          name: `${this.serviceName}.${methodName}`,
           error,
         },
       });
