@@ -12,8 +12,6 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Modules
-import { ReservationsService } from "./reservations.service";
 // Shared
 import {
   // Decorators
@@ -21,6 +19,8 @@ import {
 } from "@crud1/shared";
 // DTO's
 import { CreateDTO } from "./dto";
+// Modules
+import { ReservationsService } from "./reservations.service";
 
 // @ApiBearerAuth("")
 @ApiTags("Reservations")

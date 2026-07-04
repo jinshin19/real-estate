@@ -1,5 +1,6 @@
 export const RESPONSE_MESSAGES = {
   SUCCESS: {
+    OK: "OK",
     CREATED: "Created successfully.",
     UPDATED: "Updated successfully.",
     DELETED: "Deleted successfully.",

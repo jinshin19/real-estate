@@ -28,6 +28,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Reservation ID")
@@ -37,13 +38,19 @@ export class UpdateByIdDTO {
   public readonly reservationId?: string;
 
   @JoiSchema(
-    Joi.number().allow().default(null).label("Amount").messages(JOI_MESSAGES),
+    Joi.number()
+      .optional()
+      .allow()
+      .default(null)
+      .label("Amount")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: 300 })
   public readonly amount?: number;
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow()
       .default(null)
       .valid(...TransactionTypesC)
@@ -55,6 +62,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow()
       .default(null)
       .valid(...TransactionStatusC)
@@ -66,6 +74,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow()
       .default(null)
       .label("Payment Method")
@@ -76,6 +85,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow()
       .default(null)
       .label("Reference Number")
@@ -85,7 +95,12 @@ export class UpdateByIdDTO {
   public readonly referenceNumber?: string;
 
   @JoiSchema(
-    Joi.string().allow().default(null).label("Paid At").messages(JOI_MESSAGES),
+    Joi.string()
+      .optional()
+      .allow()
+      .default(null)
+      .label("Paid At")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: "2000-01-01" })
   public readonly paidAt?: string;

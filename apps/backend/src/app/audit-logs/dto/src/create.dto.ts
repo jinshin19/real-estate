@@ -17,6 +17,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Collection Name")
@@ -27,6 +28,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Collection ID")
@@ -51,6 +53,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Old Value")
@@ -61,6 +64,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("New Value")

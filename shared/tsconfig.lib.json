@@ -8,7 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],
     "experimentalDecorators": true,
-    "declaration": true
+    "declaration": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*.ts"],
   "references": []

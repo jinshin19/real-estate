@@ -29,6 +29,7 @@ export class HttpInterceptor implements NestInterceptor {
           status: data?.status,
           success: false,
           message: data?.message,
+          ...(data?.data ? { data: data?.data } : {}),
         });
       }),
     );

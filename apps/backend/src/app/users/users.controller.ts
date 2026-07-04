@@ -11,7 +11,6 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
-import { UsersService } from "./users.service";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 // Shared
 import {
@@ -20,6 +19,8 @@ import {
 } from "@crud1/shared";
 // DTO's
 import { UpdateByIdDTO } from "./dto";
+// Modules
+import { UsersService } from "./users.service";
 
 // @ApiBearerAuth("")
 @ApiTags("Users")

@@ -24,4 +24,4 @@ import {
   providers: [AuditLogsService],
   controllers: [AuditLogsController],
 })
-export class ReservationsModule {}
+export class AuditLogsModule {}

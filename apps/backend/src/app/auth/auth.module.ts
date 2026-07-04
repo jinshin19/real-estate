@@ -8,6 +8,10 @@ import {
   // Schema
   User,
   UserSchema,
+  Agent,
+  AgentSchema,
+  Client,
+  ClientSchema,
 } from "@crud1/shared";
 import { MongooseModule } from "@nestjs/mongoose";
 
@@ -18,6 +22,16 @@ import { MongooseModule } from "@nestjs/mongoose";
         // User
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        // Agent
+        name: Agent.name,
+        schema: AgentSchema,
+      },
+      {
+        // Client
+        name: Client.name,
+        schema: ClientSchema,
       },
     ]),
   ],

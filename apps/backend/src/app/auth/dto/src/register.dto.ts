@@ -24,6 +24,7 @@ export class RegisterDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Middle Name")
@@ -34,6 +35,7 @@ export class RegisterDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Contact Number")
@@ -60,7 +62,12 @@ export class RegisterDTO {
   public readonly gender!: UserGenderT;
 
   @JoiSchema(
-    Joi.string().allow("").default(null).label("Email").messages(JOI_MESSAGES),
+    Joi.string()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Email")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: "johndoe@gmail.com" })
   public readonly email?: string | null;
@@ -86,6 +93,7 @@ export class RegisterDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Password")

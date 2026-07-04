@@ -12,8 +12,6 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Modules
-import { AuditLogsService } from "./audit-logs.service";
 // Shared
 import {
   // Decorators
@@ -21,6 +19,8 @@ import {
 } from "@crud1/shared";
 // DTO's
 import { CreateDTO } from "./dto";
+// Modules
+import { AuditLogsService } from "./audit-logs.service";
 
 // @ApiBearerAuth("")
 @ApiTags("Audit Logs")

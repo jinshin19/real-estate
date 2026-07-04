@@ -9,6 +9,7 @@
     "backend:build": "npx nx build backend",
     "backend:clean": "rimraf apps/backend/dist",
     "backend:dev": "npm run backend:clean && npm run backend:build && npx nx serve backend",
+    "backend:deep:dev": "rimraf .nx && npm run backend:clean && npm run backend:build && npx nx serve backend",
     "apps:dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\"",
     "frontend:production": "npm run frontend:clean && npm run frontend:build && npx nx start frontend",
     "backend:production": "npm run backend:clean && npm run backend:build && npx nx serve backend",

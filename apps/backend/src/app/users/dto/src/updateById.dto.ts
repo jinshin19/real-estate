@@ -29,6 +29,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("First Name")
@@ -39,6 +40,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Last Name")
@@ -49,6 +51,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Middle Name")
@@ -59,6 +62,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Contact Number")
@@ -72,6 +76,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Birth Date")
@@ -82,6 +87,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .valid(...UserGenderC)
@@ -92,13 +98,19 @@ export class UpdateByIdDTO {
   public readonly gender!: UserGenderT;
 
   @JoiSchema(
-    Joi.string().allow("").default(null).label("Email").messages(JOI_MESSAGES),
+    Joi.string()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Email")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: "johndoe@gmail.com" })
   public readonly email?: string | null;
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .valid(...UserRoleSC)
@@ -109,7 +121,12 @@ export class UpdateByIdDTO {
   public readonly role!: UserRolesT;
 
   @JoiSchema(
-    Joi.string().allow("").default(null).label("Photo").messages(JOI_MESSAGES),
+    Joi.string()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Photo")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({
     example: "sample.png",
@@ -119,6 +136,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Password")

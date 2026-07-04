@@ -7,6 +7,10 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 import {
   // Schema
   Property,
+  // Utils
+  PaginationU,
+  RemoveRootIdU,
+  AddRemoveRootIdU,
   // Constants
   RESPONSE_MESSAGES,
   // Interfaces
@@ -15,8 +19,7 @@ import {
   ResponseHandlerService,
 } from "@crud1/shared";
 // DTO's
-import { CreateDTO, UpdateByIdDTO } from "./dto";
-
+import { CreateDTO, QueriesDTO, UpdateByIdDTO } from "./dto";
 @Injectable()
 export class PropertiesService {
   constructor(
@@ -26,16 +29,116 @@ export class PropertiesService {
 
   private readonly serviceName = "PropertiesService";
 
-  public async properties(): Promise<ResponseHandlerI> {
+  public async properties(queries: QueriesDTO): Promise<ResponseHandlerI> {
     const methodName = this.properties.name;
     try {
-      const properties = await this.property.aggregate([
-        {
-          $match: {},
-        },
-      ]);
+      let aggregateQuery = [];
 
-      if (isEmpty(properties)) {
+      if (queries.search) {
+        aggregateQuery.push({
+          $search: {
+            index: "FULL_TEXT_SEARCH_PROPERTY",
+            compound: {
+              should: [
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "title",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "description",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "projectId",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "houseModelId",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "features",
+                  },
+                },
+                // Location
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.country",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.province",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.city",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.barangay",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.street",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "location.zipCode",
+                  },
+                },
+                // Specifications
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "specifications.lotArea",
+                  },
+                },
+                {
+                  autocomplete: {
+                    query: queries.search,
+                    path: "specifications.floodArea",
+                  },
+                },
+              ],
+            },
+          },
+        });
+      }
+
+      aggregateQuery.push({
+        $match: {
+          ...(queries.status !== "all" ? { status: queries.status } : {}),
+        },
+      });
+
+      aggregateQuery.push(...RemoveRootIdU());
+
+      aggregateQuery.push(...PaginationU(queries.page, queries.limit));
+
+      const properties = await this.property.aggregate(aggregateQuery);
+
+      if (properties.length === 0 || isEmpty(properties)) {
         return ResponseHandlerService({
           status: HttpStatus.NOT_FOUND,
           success: false,
@@ -43,11 +146,13 @@ export class PropertiesService {
         });
       }
 
+      const data = properties[0];
+
       return ResponseHandlerService({
         status: HttpStatus.OK,
         success: true,
         message: RESPONSE_MESSAGES.SUCCESS.RETRIEVED,
-        data: properties,
+        data,
       });
     } catch (error: unknown) {
       return ResponseHandlerService({
@@ -65,20 +170,9 @@ export class PropertiesService {
   public async getById(propertyId: string): Promise<ResponseHandlerI> {
     const methodName = this.getById.name;
     try {
-      const property = await this.property.aggregate([
-        {
-          $match: {
-            _id: propertyId,
-          },
-          $project: {
-            name: 1,
-            email: 1,
-            role: 1,
-            status: 1,
-            dateHired: 1,
-          },
-        },
-      ]);
+      const property = await this.property.findOne({
+        _id: propertyId,
+      });
 
       if (isEmpty(property)) {
         return ResponseHandlerService({
@@ -92,7 +186,7 @@ export class PropertiesService {
         status: HttpStatus.OK,
         success: true,
         message: RESPONSE_MESSAGES.SUCCESS.RETRIEVED,
-        data: property,
+        data: AddRemoveRootIdU(property.toJSON()),
       });
     } catch (error: unknown) {
       return ResponseHandlerService({
@@ -139,7 +233,7 @@ export class PropertiesService {
         status: HttpStatus.OK,
         success: true,
         message: RESPONSE_MESSAGES.SUCCESS.CREATED,
-        data: createdProperty,
+        data: AddRemoveRootIdU(createdProperty.toJSON()),
       });
     } catch (error: unknown) {
       return ResponseHandlerService({
@@ -214,20 +308,18 @@ export class PropertiesService {
     }
   }
 
-  public async deleteById(propertyId: string): Promise<ResponseHandlerI> {
-    const methodName = this.deleteById.name;
+  public async deleteByIds(propertyIds: string): Promise<ResponseHandlerI> {
+    const methodName = this.deleteByIds.name;
     try {
-      const deletedProperty = await this.property.deleteOne({
-        _id: propertyId,
-      });
+      const ids = propertyIds.split(",");
 
-      if (isEmpty(deletedProperty.deletedCount === 0)) {
-        return ResponseHandlerService({
-          status: HttpStatus.NOT_FOUND,
-          success: false,
-          message: RESPONSE_MESSAGES.ERROR.NOT_FOUND,
-        });
-      }
+      this.property
+        .deleteMany({
+          _id: {
+            $in: ids,
+          },
+        })
+        .then();
 
       return ResponseHandlerService({
         status: HttpStatus.OK,

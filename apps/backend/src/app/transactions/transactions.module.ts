@@ -24,4 +24,4 @@ import {
   providers: [TransactionsService],
   controllers: [TransactionsController],
 })
-export class ReservationsModule {}
+export class TransactionsModule {}

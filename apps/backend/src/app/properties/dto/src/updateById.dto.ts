@@ -15,13 +15,19 @@ import {
 
 export class UpdateByIdDTO {
   @JoiSchema(
-    Joi.string().allow("").default(null).label("Title").messages(JOI_MESSAGES),
+    Joi.string()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Title")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: "Property 1" })
   public readonly title!: string;
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Description")
@@ -32,6 +38,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Project ID")
@@ -42,6 +49,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("House Model ID")
@@ -51,13 +59,19 @@ export class UpdateByIdDTO {
   public readonly houseModelId!: string;
 
   @JoiSchema(
-    Joi.number().allow("").default(null).label("Price").messages(JOI_MESSAGES),
+    Joi.number()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Price")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: 300 })
   public readonly price!: number;
 
   @JoiSchema(
     Joi.number()
+      .optional()
       .allow("")
       .default(null)
       .label("Reservation Fee")
@@ -68,6 +82,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.number()
+      .optional()
       .allow("")
       .default(null)
       .label("Reservation Date")
@@ -78,6 +93,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .valid(...PropertyStatusC)
@@ -89,6 +105,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.boolean()
+      .optional()
       .allow("")
       .default(null)
       .default(false)
@@ -100,6 +117,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.boolean()
+      .optional()
       .allow("")
       .default(null)
       .default(false)
@@ -111,6 +129,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.object()
+      .optional()
       .allow("")
       .default(null)
       .label("Location")
@@ -133,13 +152,19 @@ export class UpdateByIdDTO {
   public readonly location!: PropertyLocationI;
 
   @JoiSchema(
-    Joi.array().allow("").default(null).label("Images").messages(JOI_MESSAGES),
+    Joi.array()
+      .optional()
+      .allow("")
+      .default(null)
+      .label("Images")
+      .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: ["sample1.png", "sample2.png"] })
   public readonly images!: string;
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Features")
@@ -150,6 +175,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Specifications")
@@ -168,6 +194,7 @@ export class UpdateByIdDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Created By")

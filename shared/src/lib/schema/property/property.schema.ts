@@ -50,16 +50,16 @@ export class Property {
   @Prop({ type: Boolean, default: false })
   public readonly isPublished!: boolean;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: Object, required: true })
   public readonly location!: PropertyLocationI;
 
-  @Prop({ type: String, required: true })
-  public readonly images!: string;
+  @Prop({ type: Array, required: true })
+  public readonly images!: string[];
 
   @Prop({ type: String, required: true })
   public readonly features!: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: Object, required: true })
   public readonly specifications!: PropertySpecficationI;
 
   @Prop({ type: String, required: true })
@@ -86,7 +86,7 @@ export interface PropertySpecficationI {
   floodArea: string;
   bedrooms: number;
   garageSlot: number;
-  floors: string;
+  floors: number;
 }
 
 export type PropertyStatusT = (typeof PropertyStatusC)[number];

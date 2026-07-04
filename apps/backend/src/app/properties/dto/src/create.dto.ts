@@ -20,6 +20,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Description")
@@ -30,6 +31,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Project ID")
@@ -40,6 +42,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("House Model ID")
@@ -57,12 +60,6 @@ export class CreateDTO {
   )
   @ApiProperty({ example: 300 })
   public readonly reservationFee!: number;
-
-  @JoiSchema(
-    Joi.number().required().label("Reservation Date").messages(JOI_MESSAGES),
-  )
-  @ApiProperty({ example: "2000-01-01" })
-  public readonly reservationDate!: string;
 
   @JoiSchema(
     Joi.string()
@@ -113,10 +110,11 @@ export class CreateDTO {
 
   @JoiSchema(Joi.array().required().label("Images").messages(JOI_MESSAGES))
   @ApiProperty({ example: ["sample1.png", "sample2.png"] })
-  public readonly images!: string;
+  public readonly images!: string[];
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Features")
@@ -126,7 +124,7 @@ export class CreateDTO {
   public readonly features?: string;
 
   @JoiSchema(
-    Joi.string().required().label("Specifications").messages(JOI_MESSAGES),
+    Joi.object().required().label("Specifications").messages(JOI_MESSAGES),
   )
   @ApiProperty({
     example: {

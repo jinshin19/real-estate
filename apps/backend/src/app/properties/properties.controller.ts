@@ -4,6 +4,7 @@ import {
   Body,
   Post,
   Param,
+  Query,
   Patch,
   Delete,
   HttpCode,
@@ -13,15 +14,12 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+// Shared
+import { HttpInterceptor } from "@crud1/shared";
 // Modules
 import { PropertiesService } from "./properties.service";
-// Shared
-import {
-  // Decorators
-  HttpInterceptor,
-} from "@crud1/shared";
 // DTO's
-import { CreateDTO, UpdateByIdDTO } from "./dto";
+import { CreateDTO, QueriesDTO, UpdateByIdDTO } from "./dto";
 
 // @ApiBearerAuth("")
 @ApiTags("Properties")
@@ -33,8 +31,8 @@ export class PropertiesController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(HttpInterceptor)
   @ApiOperation({ summary: "Get all the properties" })
-  public async properties() {
-    return this.propertiesService.properties();
+  public async properties(@Query(JoiPipe) queries: QueriesDTO) {
+    return this.propertiesService.properties(queries);
   }
 
   @Get(":propertyId")
@@ -64,11 +62,11 @@ export class PropertiesController {
     return this.propertiesService.updateById(propertyId, payload);
   }
 
-  @Delete(":propertyId")
+  @Delete()
   @HttpCode(200)
   @UseInterceptors(HttpInterceptor)
   @ApiOperation({ summary: "Delete property by ID" })
-  public async deleteById(@Param("propertyId") propertyId: string) {
-    return this.propertiesService.deleteById(propertyId);
+  public async deleteByIds(@Query("propertyIds") propertyIds: string) {
+    return this.propertiesService.deleteByIds(propertyIds);
   }
 }

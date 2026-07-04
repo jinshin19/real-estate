@@ -13,8 +13,6 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Modules
-import { TransactionsService } from "./transactions.service";
 // Shared
 import {
   // Decorators
@@ -22,6 +20,8 @@ import {
 } from "@crud1/shared";
 // DTO's
 import { CreateDTO, UpdateByIdDTO } from "./dto";
+// Modules
+import { TransactionsService } from "./transactions.service";
 
 // @ApiBearerAuth("")
 @ApiTags("Transactions")

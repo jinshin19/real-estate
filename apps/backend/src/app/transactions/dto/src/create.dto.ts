@@ -15,6 +15,7 @@ import {
 export class CreateDTO {
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Reservation ID")

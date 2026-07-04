@@ -14,6 +14,7 @@ import {
 export class CreateDTO {
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Property ID")
@@ -24,6 +25,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Agent ID")
@@ -66,6 +68,7 @@ export class CreateDTO {
 
   @JoiSchema(
     Joi.string()
+      .optional()
       .allow("")
       .default(null)
       .label("Remarks")
