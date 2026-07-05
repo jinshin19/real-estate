@@ -1,11 +1,27 @@
 // NestJs Imports
 import { JoiPipe } from "nestjs-joi";
+import { type Response } from "express";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, HttpCode, Post } from "@nestjs/common";
+import {
+  Res,
+  Get,
+  Post,
+  Body,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Controller,
+  UseInterceptors,
+} from "@nestjs/common";
 // DTO's
-import { RegisterDTO } from "./dto";
+import { LoginDTO, RegisterDTO } from "./dto";
 // Modules
 import { AuthService } from "./auth.service";
+// Shared
+import {
+  // Decorator
+  HttpInterceptor,
+} from "@crud1/shared";
 
 // @ApiBearerAuth("")
 @ApiTags("Auth")
@@ -13,8 +29,31 @@ import { AuthService } from "./auth.service";
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Get("refresh")
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(HttpInterceptor)
+  @ApiOperation({ summary: "Refresh token" })
+  public async refresh(
+    @Headers("refresh-token") refreshToken: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.authService.refresh(response, refreshToken);
+  }
+
+  @Post("login")
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(HttpInterceptor)
+  @ApiOperation({ summary: "Login user" })
+  public async login(
+    @Body(JoiPipe) payload: LoginDTO,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.authService.login(response, payload);
+  }
+
   @Post("register")
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(HttpInterceptor)
   @ApiOperation({ summary: "Register new user" })
   public async register(@Body(JoiPipe) payload: RegisterDTO) {
     return this.authService.register(payload);

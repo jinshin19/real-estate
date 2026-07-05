@@ -3,6 +3,7 @@ import helmet from "helmet";
 import trim from "trim-request";
 import compression from "compression";
 import { Logger } from "@nestjs/common";
+import cookieParser from "cookie-parser";
 import userAgent from "express-useragent";
 import { NestFactory } from "@nestjs/core";
 import { json, urlencoded } from "express";
@@ -38,6 +39,7 @@ async function bootstrap() {
   app.use(compression());
   app.use(json({ limit: "50MB" }));
   app.use(urlencoded({ extended: true, limit: "50MB" }));
+  app.use(cookieParser());
   app.use(trim.all);
   app.use(userAgent.express());
 

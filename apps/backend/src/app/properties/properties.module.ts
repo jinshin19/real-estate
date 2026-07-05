@@ -6,6 +6,7 @@ import { PropertiesService } from "./properties.service";
 import { PropertiesController } from "./properties.controller";
 // Shared
 import {
+  JWTModule,
   // Schema
   Property,
   PropertySchema,
@@ -20,6 +21,7 @@ import {
         schema: PropertySchema,
       },
     ]),
+    JWTModule,
   ],
   providers: [PropertiesService],
   controllers: [PropertiesController],

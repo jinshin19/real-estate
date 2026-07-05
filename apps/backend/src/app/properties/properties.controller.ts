@@ -11,11 +11,12 @@ import {
   Controller,
   HttpStatus,
   UseInterceptors,
+  UseGuards,
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 // Shared
-import { HttpInterceptor } from "@crud1/shared";
+import { AuthGuard, HttpInterceptor } from "@crud1/shared";
 // Modules
 import { PropertiesService } from "./properties.service";
 // DTO's
@@ -29,6 +30,7 @@ export class PropertiesController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
   @UseInterceptors(HttpInterceptor)
   @ApiOperation({ summary: "Get all the properties" })
   public async properties(@Query(JoiPipe) queries: QueriesDTO) {

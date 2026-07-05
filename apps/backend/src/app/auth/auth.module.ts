@@ -1,8 +1,6 @@
 // NestJs Imports
 import { Module } from "@nestjs/common";
-// Modules
-import { AuthService } from "./auth.service";
-import { AuthController } from "./auth.controller";
+import { MongooseModule } from "@nestjs/mongoose";
 // Shared
 import {
   // Schema
@@ -12,8 +10,12 @@ import {
   AgentSchema,
   Client,
   ClientSchema,
+  // Services
+  JWTModule,
 } from "@crud1/shared";
-import { MongooseModule } from "@nestjs/mongoose";
+// Modules
+import { AuthService } from "./auth.service";
+import { AuthController } from "./auth.controller";
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { MongooseModule } from "@nestjs/mongoose";
         schema: ClientSchema,
       },
     ]),
+    // Modules
+    JWTModule,
   ],
   providers: [AuthService],
   controllers: [AuthController],
