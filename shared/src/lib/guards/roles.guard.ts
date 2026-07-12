@@ -1,25 +1,24 @@
 // NestJs Imports
+import { Observable } from "rxjs";
 import {
-  Inject,
   Injectable,
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
 } from "@nestjs/common";
-import { Observable } from "rxjs";
 import { Reflector } from "@nestjs/core";
-// Service
+// Services
 import { JWTService } from "../services/index.js";
 // Utils
+import { ExtractUserRoleU } from "../utils/roles-permissions.utils.js";
 import { ExtractAccessTokenU } from "../utils/header.utils.js";
 // Constants
 import { KEYS } from "../constants/key.contants.js";
 import { RESPONSE_MESSAGES } from "../constants/response-messages.constants.js";
 
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export class RolesGuard implements CanActivate {
   constructor(
-    @Inject(Reflector)
     private readonly reflector: Reflector,
     private readonly jwtService: JWTService,
   ) {}
@@ -40,20 +39,22 @@ export class PermissionGuard implements CanActivate {
 
     const decodedToken = this.jwtService.decodeToken(token);
 
-    const userPermissions = decodedToken.data?.permissions;
-
-    const requiredPermission = this.reflector.get<string[]>(
-      KEYS.PERMISSIONK,
+    const requiredRoles = this.reflector.get<string[]>(
+      KEYS.ROLESK,
       context.getHandler(),
     );
 
-    if (!requiredPermission) return false;
+    const extractedRole = ExtractUserRoleU(decodedToken.data ?? null);
 
-    const hasPermission = requiredPermission.some((permission) =>
-      userPermissions?.includes(permission),
-    );
+    if (!extractedRole) {
+      throw new UnauthorizedException(
+        RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
+      );
+    }
 
-    if (!hasPermission) {
+    const hasRoles = requiredRoles.includes(extractedRole);
+
+    if (!hasRoles) {
       throw new UnauthorizedException(
         RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
       );

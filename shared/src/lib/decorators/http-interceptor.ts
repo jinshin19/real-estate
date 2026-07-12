@@ -1,6 +1,7 @@
 // NestJs Imports
 import {
   Injectable,
+  HttpStatus,
   CallHandler,
   NestInterceptor,
   ExecutionContext,
@@ -11,6 +12,14 @@ import {
   // Handlers
   ResponseHandlerService,
 } from "../handlers/response.handler.js";
+// Utils
+import {
+  ExtractAccessTokenU,
+  ExtractRefreshTokenU,
+} from "../utils/header.utils.js";
+// Constants
+import { RESPONSE_MESSAGES } from "../constants/response-messages.constants.js";
+import { ExtractUserU } from "../utils/token.utils.js";
 
 @Injectable()
 export class HttpInterceptor implements NestInterceptor {
@@ -26,13 +35,38 @@ export class HttpInterceptor implements NestInterceptor {
 
     const headers = request.headers;
 
+    const accessToken = ExtractAccessTokenU(request);
+
+    console.log("accessToken", accessToken);
+
+    if (accessToken) {
+      const user = ExtractUserU(accessToken);
+      headers["token-payload"] = user;
+    }
+
     if (
       classController.name === "AuthController" &&
       handler.name === "refresh"
     ) {
-      const refreshToken = request.cookies?.refresh_token ?? null;
-      headers["refresh-token"] = refreshToken;
+      const token = ExtractRefreshTokenU(request);
+
+      if (!token) {
+        return next.handle().pipe(
+          map((data) => {
+            response.status(data?.status || 500);
+            return ResponseHandlerService({
+              status: HttpStatus.UNAUTHORIZED,
+              success: false,
+              message: RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
+            });
+          }),
+        );
+      }
+
+      headers["refresh-token"] = token;
     }
+
+    // CREATE SAME USER AGENT CONDITION HERE OR DO GUARDS
 
     return next.handle().pipe(
       map((data) => {

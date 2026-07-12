@@ -10,13 +10,19 @@ import {
   // Utils
   PaginationU,
   RemoveRootIdU,
-  AddRemoveRootIdU,
+  RolesPrivilegesC,
   // Constants
+  AddRemoveRootIdU,
   RESPONSE_MESSAGES,
-  // Interfaces
-  type ResponseHandlerI,
-  // Handler
+  // Services
   ResponseHandlerService,
+  // Interfaces
+  type UserRolesT,
+  type TokenPayloadI,
+  type PropertyStatusT,
+  type ResponseHandlerI,
+  type PropertyAdminSuperAdminT,
+  type PropertyAgentAdminSuperAdminT,
 } from "@crud1/shared";
 // DTO's
 import { CreateDTO, QueriesDTO, UpdateByIdDTO } from "./dto";
@@ -29,9 +35,21 @@ export class PropertiesService {
 
   private readonly serviceName = "PropertiesService";
 
-  public async properties(queries: QueriesDTO): Promise<ResponseHandlerI> {
+  public async properties(
+    queries: QueriesDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.properties.name;
     try {
+      const userRole = tokenPayload?.role ?? "client";
+
+      const payloadStatus = this.GetPropertyStatus(
+        userRole as UserRolesT,
+        queries.status as PropertyStatusT & "all",
+      );
+
+      console.log(payloadStatus);
+
       let aggregateQuery = [];
 
       if (queries.search) {
@@ -127,9 +145,12 @@ export class PropertiesService {
       }
 
       aggregateQuery.push({
-        $match: {
-          ...(queries.status !== "all" ? { status: queries.status } : {}),
-        },
+        // $match: {
+        //   ...(payloadStatus.status !== "all"
+        //     ? { status: payloadStatus.status }
+        //     : { $or: payloadStatus.allowedStatuses }),
+        // },
+        $match: {},
       });
 
       aggregateQuery.push(...RemoveRootIdU());
@@ -167,11 +188,21 @@ export class PropertiesService {
     }
   }
 
-  public async getById(propertyId: string): Promise<ResponseHandlerI> {
+  public async getById(
+    propertyId: string,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.getById.name;
     try {
+      const userRole = tokenPayload?.role ?? "client";
+
+      const status = this.GetPropertyStatusById(userRole as UserRolesT);
+
+      console.log("status", status);
+
       const property = await this.property.findOne({
         _id: propertyId,
+        $or: status,
       });
 
       if (isEmpty(property)) {
@@ -201,9 +232,14 @@ export class PropertiesService {
     }
   }
 
-  public async create(payload: CreateDTO): Promise<ResponseHandlerI> {
+  public async create(
+    payload: CreateDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.create.name;
     try {
+      const userRole = tokenPayload.role;
+
       const createdProperty = await this.property.create({
         title: payload.title,
         description: payload.description,
@@ -211,14 +247,14 @@ export class PropertiesService {
         houseModelId: payload.houseModelId,
         price: payload.price,
         reservationFee: payload.reservationFee,
-        status: payload.status,
-        isFeatured: payload.isFeatured,
-        isPublished: payload.isPublished,
+        status: userRole === "agent" ? "unavailable" : payload.status,
+        isFeatured: userRole === "agent" ? false : payload.isFeatured,
+        isPublished: userRole === "agent" ? false : payload.isPublished,
         location: payload.location,
         images: payload.images,
         features: payload.features,
         specifications: payload.specifications,
-        createdBy: payload.createdBy,
+        createdBy: tokenPayload.id,
       });
 
       if (isEmpty(createdProperty)) {
@@ -251,34 +287,103 @@ export class PropertiesService {
   public async updateById(
     propertyId: string,
     payload: UpdateByIdDTO,
+    tokenPayload: TokenPayloadI,
   ): Promise<ResponseHandlerI> {
     const methodName = this.updateById.name;
     try {
+      const userRole = tokenPayload.role;
+
       const updatedProperty = await this.property.findOneAndUpdate(
         {
           _id: propertyId,
         },
         {
-          ...(payload?.title ? { title: payload.title } : {}),
-          ...(payload?.description ? { description: payload.description } : {}),
-          ...(payload?.projectId ? { projectId: payload.projectId } : {}),
-          ...(payload?.houseModelId
+          ...(payload?.title &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { title: payload.title }
+            : {}),
+          ...(payload?.description &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { description: payload.description }
+            : {}),
+          ...(payload?.projectId &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { projectId: payload.projectId }
+            : {}),
+          ...(payload?.houseModelId &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
             ? { houseModelId: payload.houseModelId }
             : {}),
-          ...(payload?.price ? { price: payload.price } : {}),
-          ...(payload?.reservationFee
+          ...(payload?.price &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { price: payload.price }
+            : {}),
+          ...(payload?.reservationFee &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
             ? { reservationFee: payload.reservationFee }
             : {}),
-          ...(payload?.status ? { status: payload.status } : {}),
-          ...(payload?.isFeatured ? { isFeatured: payload.isFeatured } : {}),
-          ...(payload?.isPublished ? { isPublished: payload.isPublished } : {}),
-          ...(payload?.location ? { location: payload.location } : {}),
-          ...(payload?.images ? { images: payload.images } : {}),
-          ...(payload?.features ? { features: payload.features } : {}),
-          ...(payload?.specifications
+          ...(payload?.status
+            ? {
+                status: this.GetUpdatePropertyStatus(
+                  userRole as PropertyAgentAdminSuperAdminT,
+                  payload.status,
+                ),
+              }
+            : {}),
+          ...(payload?.isFeatured &&
+          RolesPrivilegesC.properties2.includes(
+            userRole as PropertyAdminSuperAdminT,
+          )
+            ? { isFeatured: payload.isFeatured }
+            : {}),
+          ...(payload?.isPublished &&
+          RolesPrivilegesC.properties2.includes(
+            userRole as PropertyAdminSuperAdminT,
+          )
+            ? { isPublished: payload.isPublished }
+            : {}),
+          ...(payload?.location &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { location: payload.location }
+            : {}),
+          ...(payload?.images &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { images: payload.images }
+            : {}),
+          ...(payload?.features &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
+            ? { features: payload.features }
+            : {}),
+          ...(payload?.specifications &&
+          RolesPrivilegesC.properties1.includes(
+            userRole as PropertyAgentAdminSuperAdminT,
+          )
             ? { specifications: payload.specifications }
             : {}),
-          ...(payload?.createdBy ? { createdBy: payload.createdBy } : {}),
+          ...(payload?.createdBy &&
+          RolesPrivilegesC.properties2.includes(
+            userRole as PropertyAdminSuperAdminT,
+          )
+            ? { createdBy: payload.createdBy }
+            : {}),
         },
       );
 
@@ -338,4 +443,97 @@ export class PropertiesService {
       });
     }
   }
+
+  private GetPropertyStatus(
+    role: UserRolesT,
+    // status: GetPropertyStatusFilterI,
+    status: PropertyStatusT & "all",
+  ): GetPropertyStatusFilterResponseI {
+    console.log("STAUS FROM ", status);
+    if (!status)
+      return {
+        status: "available",
+        allowedStatuses: [],
+      };
+
+    const roles: Record<UserRolesT, GetPropertyStatusFilterI[]> = {
+      client: [{ status: "available" }],
+      agent: [{ status: "available" }, { status: "unavailable" }],
+      admin: [
+        { status: "all" },
+        { status: "available" },
+        { status: "unavailable" },
+        { status: "sold" },
+        { status: "reserved" },
+      ],
+      superadmin: [
+        { status: "all" },
+        { status: "available" },
+        { status: "unavailable" },
+        { status: "sold" },
+        { status: "reserved" },
+      ],
+    };
+
+    const allowedStatusPerRole = roles[role].includes(status);
+
+    return allowedStatusPerRole
+      ? {
+          // status: status as PropertyStatusT & "all",
+          status,
+          allowedStatuses: roles[role],
+        }
+      : {
+          status: roles[role][0] as PropertyStatusT & "all",
+          allowedStatuses: roles[role],
+        };
+  }
+
+  private GetPropertyStatusById(role: UserRolesT): GetPropertyStatusByIdI[] {
+    console.log("role", role);
+    const roles: Record<UserRolesT, GetPropertyStatusByIdI[]> = {
+      client: [{ status: "available" }],
+      agent: [{ status: "available" }, { status: "unavailable" }],
+      admin: [
+        { status: "available" },
+        { status: "unavailable" },
+        { status: "sold" },
+        { status: "reserved" },
+      ],
+      superadmin: [
+        { status: "available" },
+        { status: "unavailable" },
+        { status: "sold" },
+        { status: "reserved" },
+      ],
+    };
+
+    const allowedStatusPerRole = roles[role];
+
+    return allowedStatusPerRole;
+  }
+
+  private GetUpdatePropertyStatus(
+    role: PropertyAgentAdminSuperAdminT,
+    status: PropertyStatusT,
+  ): PropertyStatusT {
+    if (!status) return "unavailable";
+
+    if (role === "agent") return "unavailable";
+
+    return status;
+  }
+}
+interface GetPropertyStatusByIdI {
+  // status: string;
+  status: PropertyStatusT;
+}
+// type GetPropertyStatusFilterT = PropertyStatusT | "all";
+interface GetPropertyStatusFilterI {
+  status: PropertyStatusT | "all";
+}
+
+interface GetPropertyStatusFilterResponseI {
+  status: PropertyStatusT | "all";
+  allowedStatuses: GetPropertyStatusFilterI[];
 }

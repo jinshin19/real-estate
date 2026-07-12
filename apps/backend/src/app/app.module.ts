@@ -6,9 +6,10 @@ import { Inject, Module, OnModuleInit } from "@nestjs/common";
 import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
 // Shared
 import {
+  // Guards
+  PermissionGuard,
   // Decorators
   HttpExceptionFilter,
-  PermissionGuard,
 } from "@crud1/shared";
 // Modules
 import { AuthModule } from "./auth/auth.module";
@@ -38,10 +39,10 @@ import { ReservationsModule } from "./reservations/reservations.module";
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    {
-      provide: APP_GUARD,
-      useClass: PermissionGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: PermissionGuard,
+    // },
   ],
 })
 export class AppModule implements OnModuleInit {

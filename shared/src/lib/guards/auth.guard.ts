@@ -8,6 +8,8 @@ import {
 } from "@nestjs/common";
 // Services
 import { JWTService } from "../services/index.js";
+// Utils
+import { ExtractAccessTokenU } from "../utils/header.utils.js";
 // Constants
 import { RESPONSE_MESSAGES } from "../constants/response-messages.constants.js";
 
@@ -20,18 +22,15 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const http = context.switchToHttp();
     const request = http.getRequest();
+    const token = ExtractAccessTokenU(request);
 
-    const authorization = request?.headers?.authorization ?? null;
-
-    if (!authorization) {
+    if (!token) {
       throw new UnauthorizedException(
         RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
       );
     }
 
-    const accessToken = authorization.replace("Bearer ", "") ?? null;
-
-    const validatedToken = this.jwtService.validateToken(accessToken);
+    const validatedToken = this.jwtService.validateToken(token);
 
     if (!validatedToken.success) {
       throw new UnauthorizedException(

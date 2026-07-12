@@ -1,6 +1,9 @@
 // Utils
 export * from "./lib/utils/index.js";
 
+// Types
+export * from "./lib/types/index.js";
+
 // Guards
 export * from "./lib/guards/index.js";
 
@@ -9,6 +12,9 @@ export * from "./lib/services/index.js";
 
 // Constants
 export * from "./lib/constants/index.js";
+
+// Interfaces
+export * from "./lib/interfaces/index.js";
 
 // Decorators
 export * from "./lib/decorators/index.js";

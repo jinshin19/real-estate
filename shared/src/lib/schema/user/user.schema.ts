@@ -1,6 +1,6 @@
 // Constants
 export const UserGenderC = ["male", "female"] as const;
-export const UserRoleSC = ["client", "agent", "admin"] as const;
+export const UserRoleSC = ["client", "agent", "admin", "superadmin"] as const;
 
 // NestJs Imports
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";

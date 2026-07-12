@@ -65,7 +65,7 @@ export class CreateDTO {
     Joi.string()
       .required()
       .valid(...PropertyStatusC)
-      .label("Title")
+      .label("Status")
       .messages(JOI_MESSAGES),
   )
   @ApiProperty({ example: "available" })
@@ -136,8 +136,4 @@ export class CreateDTO {
     },
   })
   public readonly specifications!: PropertySpecficationI;
-
-  @JoiSchema(Joi.string().required().label("Created By").messages(JOI_MESSAGES))
-  @ApiProperty({ example: "123" })
-  public readonly createdBy?: string;
 }

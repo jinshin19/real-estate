@@ -21,6 +21,8 @@ import {
   type ResponseHandlerI,
   // Handler
   ResponseHandlerService,
+  SetRolePermissionsU,
+  SetRolePermissionsT,
 } from "@crud1/shared";
 // DTO's
 import { LoginDTO, RegisterDTO } from "./dto";
@@ -68,19 +70,24 @@ export class AuthService {
         });
       }
 
-      const accessToken = this.jwtService.generateAccessToken({
-        id: user._id,
-      });
-      const refreshToken = this.jwtService.generateRefreshToken({
-        id: user._id,
-      });
-
-      SetCookieU(response, refreshToken as string);
-
       const data = AddRemoveRootIdU(user.toJSON());
 
       delete data?.isDeleted;
       delete data?.password;
+
+      const getRolePermissions = SetRolePermissionsU(
+        user.role as SetRolePermissionsT,
+      );
+
+      const accessToken = this.jwtService.generateAccessToken({
+        ...data,
+        permissions: getRolePermissions || [],
+      });
+      const refreshToken = this.jwtService.generateRefreshToken({
+        id: data.id,
+      });
+
+      SetCookieU(response, refreshToken as string);
 
       return ResponseHandlerService({
         status: HttpStatus.OK,
