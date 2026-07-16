@@ -1,10 +1,16 @@
 export const PERMISSIONSC = {
+  USERS: {
+    get: "users.get",
+    getById: "users.getById",
+    updateById: "users.updateById",
+    deleteByIds: "users.deleteByIds",
+  },
   PROPERTIES: {
     properties: "properties.properties",
     getById: "properties.getById",
     create: "properties.create",
     updateById: "properties.updateById",
-    deleteById: "properties.deleteById",
+    deleteByIds: "properties.deleteByIds",
   },
 };
 

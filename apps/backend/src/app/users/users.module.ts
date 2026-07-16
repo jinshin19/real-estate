@@ -6,6 +6,8 @@ import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 // Shared
 import {
+  // Services
+  JWTModule,
   // Schema
   User,
   UserSchema,
@@ -20,6 +22,7 @@ import {
         schema: UserSchema,
       },
     ]),
+    JWTModule,
   ],
   providers: [UsersService],
   controllers: [UsersController],

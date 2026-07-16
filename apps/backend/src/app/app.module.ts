@@ -22,7 +22,8 @@ import { ReservationsModule } from "./reservations/reservations.module";
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `apps/backend/src/environment/.env.${process.env.NODE_ENV}`,
+      // envFilePath: `apps/backend/src/environment/.env.${process.env.NODE_ENV}`,
+      envFilePath: `apps/backend/src/environment/.env.local`,
     }),
     MongooseModule.forRoot(process.env.CRUD1_DATABASE_CONNECTION_1!),
     // Modules

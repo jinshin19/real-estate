@@ -198,8 +198,6 @@ export class PropertiesService {
 
       const status = this.GetPropertyStatusById(userRole as UserRolesT);
 
-      console.log("status", status);
-
       const property = await this.property.findOne({
         _id: propertyId,
         $or: status,

@@ -7,15 +7,19 @@ import { HttpStatus, Injectable } from "@nestjs/common";
 import {
   // Schema
   User,
+  // Utils
+  PaginationU,
+  RemoveRootIdU,
   // Constants
   RESPONSE_MESSAGES,
   // Interfaces
+  type TokenPayloadI,
   type ResponseHandlerI,
   // Handler
   ResponseHandlerService,
 } from "@crud1/shared";
 // DTO's
-import { UpdateByIdDTO } from "./dto";
+import { QueriesDTO, UpdateByIdDTO } from "./dto";
 
 @Injectable()
 export class UsersService {
@@ -26,23 +30,57 @@ export class UsersService {
 
   private readonly serviceName = "UsersService";
 
-  public async users(): Promise<ResponseHandlerI> {
+  public async users(
+    queries: QueriesDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.users.name;
     try {
-      const users = await this.user.aggregate([
-        {
-          $match: {},
-          $project: {
-            name: 1,
-            email: 1,
-            role: 1,
-            status: 1,
-            dateHired: 1,
-          },
-        },
-      ]);
+      let aggregateQuery = [];
 
-      if (isEmpty(users)) {
+      // const userRole = tokenPayload.role ?? "client";
+
+      if (queries.search) {
+        const { search } = queries;
+        aggregateQuery.push({
+          $match: {
+            $or: [
+              {
+                firstName: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+              {
+                lastName: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+            ],
+          },
+        });
+      }
+
+      aggregateQuery.push({
+        $match: {
+          ...(queries.role ? { role: queries.role } : {}),
+        },
+      });
+
+      aggregateQuery.push({
+        $project: {
+          password: 0,
+        },
+      });
+
+      aggregateQuery.push(...RemoveRootIdU());
+
+      aggregateQuery.push(...PaginationU(queries.page, queries.limit));
+
+      const users = await this.user.aggregate(aggregateQuery);
+
+      if (isEmpty(users[0]?.items)) {
         return ResponseHandlerService({
           status: HttpStatus.NOT_FOUND,
           success: false,
@@ -69,23 +107,19 @@ export class UsersService {
     }
   }
 
-  public async getById(userId: string): Promise<ResponseHandlerI> {
+  public async getById(
+    userId: string,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.getById.name;
     try {
-      const user = await this.user.aggregate([
-        {
-          $match: {
-            _id: userId,
-          },
-          $project: {
-            name: 1,
-            email: 1,
-            role: 1,
-            status: 1,
-            dateHired: 1,
-          },
-        },
-      ]);
+      // const userRole = tokenPayload.role ?? "client";
+
+      const user = await this.user.findOne({
+        _id: userId,
+        role: "agent",
+        isDeleted: false,
+      });
 
       if (isEmpty(user)) {
         return ResponseHandlerService({
@@ -117,9 +151,12 @@ export class UsersService {
   public async updateById(
     userId: string,
     payload: UpdateByIdDTO,
+    tokenPayload: TokenPayloadI,
   ): Promise<ResponseHandlerI> {
     const methodName = this.updateById.name;
     try {
+      // const userRole = tokenPayload.role ?? "client";
+
       if (payload.action === "remove") {
         const updatedUser = await this.user.findOneAndUpdate(
           {
@@ -192,18 +229,18 @@ export class UsersService {
     }
   }
 
-  public async hardDeleteById(userId: string): Promise<ResponseHandlerI> {
-    const methodName = this.hardDeleteById.name;
+  public async deleteByIds(userIds: string): Promise<ResponseHandlerI> {
+    const methodName = this.deleteByIds.name;
     try {
-      const deletedUser = await this.user.deleteOne({ _id: userId });
+      const selectedIds = userIds?.split(",");
 
-      if (isEmpty(deletedUser.deletedCount === 0)) {
-        return ResponseHandlerService({
-          status: HttpStatus.NOT_FOUND,
-          success: false,
-          message: RESPONSE_MESSAGES.ERROR.NOT_FOUND,
-        });
-      }
+      this.user
+        .deleteOne({
+          _id: {
+            $in: selectedIds,
+          },
+        })
+        .then();
 
       return ResponseHandlerService({
         status: HttpStatus.OK,

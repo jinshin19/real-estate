@@ -66,8 +66,8 @@ export class PropertiesController {
   }
 
   @Post()
-  @Roles(ROLEC.agent, ROLEC.admin)
   @HttpCode(HttpStatus.CREATED)
+  @Roles(ROLEC.agent, ROLEC.admin)
   @UseInterceptors(HttpInterceptor)
   @Permissions(PERMISSIONSC.PROPERTIES.create)
   @UseGuards(AuthGuard, RolesGuard, PermissionGuard)
@@ -80,10 +80,10 @@ export class PropertiesController {
   }
 
   @Patch(":propertyId")
-  @Roles(ROLEC.agent, ROLEC.admin, ROLEC.superadmin)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(HttpInterceptor)
   @Permissions(PERMISSIONSC.PROPERTIES.updateById)
+  @Roles(ROLEC.agent, ROLEC.admin, ROLEC.superadmin)
   @UseGuards(AuthGuard, RolesGuard, PermissionGuard)
   @ApiOperation({ summary: "Update property by ID" })
   public async updateById(
@@ -95,10 +95,10 @@ export class PropertiesController {
   }
 
   @Delete()
-  @Roles(ROLEC.admin, ROLEC.superadmin)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(HttpInterceptor)
-  @Permissions(PERMISSIONSC.PROPERTIES.deleteById)
+  @Roles(ROLEC.admin, ROLEC.superadmin)
+  @Permissions(PERMISSIONSC.PROPERTIES.deleteByIds)
   @UseGuards(AuthGuard, RolesGuard, PermissionGuard)
   @ApiOperation({ summary: "Hard deletion of selected ID or multiple ID" })
   public async deleteByIds(@Query("propertyIds") propertyIds: string) {
