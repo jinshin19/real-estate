@@ -144,7 +144,7 @@ export class AuditLogsService {
   public async deleteById(auditLogId: string): Promise<ResponseHandlerI> {
     const methodName = this.deleteById.name;
     try {
-      const deletedAuditLog = await this.auditLog.deleteOne({
+      const deletedAuditLog = await this.auditLog.deleteMany({
         _id: auditLogId,
       });
 

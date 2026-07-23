@@ -144,14 +144,31 @@ export class PropertiesService {
         });
       }
 
-      aggregateQuery.push({
-        // $match: {
-        //   ...(payloadStatus.status !== "all"
-        //     ? { status: payloadStatus.status }
-        //     : { $or: payloadStatus.allowedStatuses }),
-        // },
-        $match: {},
-      });
+      if (queries.status) {
+        if (queries.status === "all") {
+          console.log("went here to all");
+          aggregateQuery.push({
+            $match: {
+              $or: payloadStatus.allowedStatuses,
+            },
+          });
+        }
+
+        if (queries.status !== "all") {
+          console.log("went here not all", {
+            role: userRole,
+            status: queries.status,
+            payloadStatus,
+          });
+          aggregateQuery.push({
+            $match: {
+              status: Object.values(payloadStatus.status)[0],
+            },
+          });
+        }
+      }
+
+      console.log("aggregateQuery", aggregateQuery);
 
       aggregateQuery.push(...RemoveRootIdU());
 
@@ -475,14 +492,17 @@ export class PropertiesService {
 
     const allowedStatusPerRole = roles[role].includes(status);
 
+    console.log("TEST", roles[role][0] as PropertyStatusT & "all");
+
     return allowedStatusPerRole
       ? {
-          // status: status as PropertyStatusT & "all",
           status,
           allowedStatuses: roles[role],
         }
       : {
-          status: roles[role][0] as PropertyStatusT & "all",
+          status: (roles[role][
+            roles[role].findIndex((index) => index.status === status)
+          ] || roles[role][0]) as PropertyStatusT & "all",
           allowedStatuses: roles[role],
         };
   }

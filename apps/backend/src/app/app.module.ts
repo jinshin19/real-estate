@@ -1,22 +1,18 @@
 // NestJs Imports
 import * as mongoose from "mongoose";
-import { APP_FILTER, APP_GUARD } from "@nestjs/core";
+import { APP_FILTER } from "@nestjs/core";
 import { ConfigModule } from "@nestjs/config";
 import { Inject, Module, OnModuleInit } from "@nestjs/common";
 import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
 // Shared
 import {
-  // Guards
-  PermissionGuard,
-  // Decorators
-  HttpExceptionFilter,
+    // Decorators
+    HttpExceptionFilter
 } from "@crud1/shared";
 // Modules
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { PropertiesModule } from "./properties/properties.module";
-import { TransactionsModule } from "./transactions/transactions.module";
-import { AuditLogsModule } from "./audit-logs/audit-logs.module";
 import { ReservationsModule } from "./reservations/reservations.module";
 @Module({
   imports: [
@@ -32,7 +28,7 @@ import { ReservationsModule } from "./reservations/reservations.module";
     // AuditLogsModule,
     PropertiesModule,
     // TransactionsModule,
-    // ReservationsModule,
+    ReservationsModule,
   ],
   controllers: [],
   providers: [
@@ -40,10 +36,6 @@ import { ReservationsModule } from "./reservations/reservations.module";
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: PermissionGuard,
-    // },
   ],
 })
 export class AppModule implements OnModuleInit {

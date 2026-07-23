@@ -6,9 +6,11 @@ import { ReservationsService } from "./reservations.service";
 import { ReservationsController } from "./reservations.controller";
 // Shared
 import {
-  // Schema
-  Reservation,
-  ReservationSchema,
+    // Services
+    JWTModule,
+    // Schema
+    Reservation,
+    ReservationSchema,
 } from "@crud1/shared";
 
 @Module({
@@ -20,6 +22,7 @@ import {
         schema: ReservationSchema,
       },
     ]),
+    JWTModule,
   ],
   providers: [ReservationsService],
   controllers: [ReservationsController],

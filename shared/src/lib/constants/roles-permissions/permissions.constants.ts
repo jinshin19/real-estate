@@ -5,6 +5,13 @@ export const PERMISSIONSC = {
     updateById: "users.updateById",
     deleteByIds: "users.deleteByIds",
   },
+  RESERVATIONS: {
+    reservations: "reservations.reservations",
+    getById: "reservations.getById",
+    create: "reservations.create",
+    updateById: "reservations.updateById",
+    deleteByIds: "reservations.deleteByIds",
+  },
   PROPERTIES: {
     properties: "properties.properties",
     getById: "properties.getById",
@@ -15,5 +22,7 @@ export const PERMISSIONSC = {
 };
 
 export const EXTRACTEDPERMISSIONSC = {
+  USERS: Object.values(PERMISSIONSC.USERS),
   PROPERTIES: Object.values(PERMISSIONSC.PROPERTIES),
+  RESERVATIONS: Object.values(PERMISSIONSC.RESERVATIONS),
 };

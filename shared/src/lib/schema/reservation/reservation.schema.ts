@@ -1,9 +1,9 @@
 // Constants
 export const ReservationStatusC = [
-  "paid",
   "pending",
-  "confirmed",
+  "reserved",
   "cancelled",
+  "expired",
   "completed",
 ] as const;
 
@@ -24,29 +24,32 @@ export class Reservation {
   @Prop({ type: String, default: () => SYSTEM_ID() })
   public readonly _id!: string;
 
+  @Prop({ type: String, default: () => SYSTEM_ID("RLRSV") })
+  public reservationNo!: string;
+
   @Prop({ type: String, required: true })
   public propertyId!: string;
 
   @Prop({ type: String, required: true })
   public agentId!: string;
 
-  @Prop({ type: String, required: true })
-  public customerId!: string;
+  @Prop({ type: String, enum: ReservationStatusC, required: true })
+  public status!: ReservationStatusT;
+
+  @Prop({ type: Number, required: true })
+  public reservationFee!: number;
 
   @Prop({ type: String, required: true })
-  public status!: string;
-
-  @Prop({ type: String, required: true })
-  public reservationFee!: string;
-
-  @Prop({ type: String, required: true })
-  public reservationDate!: string;
+  public reservedAt!: string;
 
   @Prop({ type: String, required: true })
   public expiresAt!: string;
 
   @Prop({ type: String, default: null })
   public remarks?: string | null;
+
+  @Prop({ type: String, required: true })
+  public createdBy!: string;
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

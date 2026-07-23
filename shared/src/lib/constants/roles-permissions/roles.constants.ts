@@ -5,10 +5,14 @@ export const ROLESC = {
   agent: [
     // Properties
     ...EXTRACTEDPERMISSIONSC.PROPERTIES,
+    // Reservations
+    ...EXTRACTEDPERMISSIONSC.RESERVATIONS,
   ],
   admin: [
     // Properties
     ...EXTRACTEDPERMISSIONSC.PROPERTIES,
+    // Reservations
+    ...EXTRACTEDPERMISSIONSC.RESERVATIONS,
   ],
 } as const;
 

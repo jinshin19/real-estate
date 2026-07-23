@@ -5,17 +5,20 @@ import { InjectModel } from "@nestjs/mongoose";
 import { HttpStatus, Injectable } from "@nestjs/common";
 // Shared
 import {
-  // Schema
+  // Utils
   Reservation,
+  PaginationU,
+  RemoveRootIdU,
   // Constants
   RESPONSE_MESSAGES,
   // Interfaces
+  type TokenPayloadI,
   type ResponseHandlerI,
   // Handler
   ResponseHandlerService,
 } from "@crud1/shared";
 // DTO's
-import { CreateDTO } from "./dto";
+import { CreateDTO, QueriesDTO, UpdateByIdDTO } from "./dto";
 
 @Injectable()
 export class ReservationsService {
@@ -26,16 +29,27 @@ export class ReservationsService {
 
   private readonly serviceName = "ReservationsService";
 
-  public async reservations(): Promise<ResponseHandlerI> {
+  public async reservations(
+    queries: QueriesDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.reservations.name;
     try {
-      const reservations = await this.reservation.aggregate([
-        {
-          $match: {},
-        },
-      ]);
+      let aggregateQuery = [];
 
-      if (isEmpty(reservations)) {
+      aggregateQuery.push({
+        $match: {
+          ...(queries.status !== "all" ? { status: queries.status } : {}),
+        },
+      });
+
+      aggregateQuery.push(...RemoveRootIdU());
+
+      aggregateQuery.push(...PaginationU(queries.page, queries.limit));
+
+      const reservations = await this.reservation.aggregate(aggregateQuery);
+
+      if (isEmpty(reservations[0]?.items)) {
         return ResponseHandlerService({
           status: HttpStatus.NOT_FOUND,
           success: false,
@@ -62,16 +76,17 @@ export class ReservationsService {
     }
   }
 
-  public async getById(reservationId: string): Promise<ResponseHandlerI> {
+  public async getById(
+    reservationId: string,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.getById.name;
     try {
-      const reservation = await this.reservation.aggregate([
-        {
-          $match: {
-            _id: reservationId,
-          },
-        },
-      ]);
+      // const userRole = tokenPayload.role ?? "client";
+
+      const reservation = await this.reservation.findOne({
+        _id: reservationId,
+      });
 
       if (isEmpty(reservation)) {
         return ResponseHandlerService({
@@ -100,30 +115,35 @@ export class ReservationsService {
     }
   }
 
-  public async create(payload: CreateDTO): Promise<ResponseHandlerI> {
+  public async create(
+    payload: CreateDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
     const methodName = this.create.name;
     try {
+      // const userRole = tokenPayload.role ?? "client"
+
       const createdReservation = await this.reservation.create({
-        propertyId: payload?.propertyId,
-        agentId: payload?.agentId,
-        customerId: payload?.customerId,
+        propertyId: payload.propertyId,
+        agentId: payload.agentId,
         status: payload.status,
         reservationFee: payload.reservationFee,
-        reservationDate: payload.reservationDate,
+        reservedAt: payload.reservedAt,
         expiresAt: payload.expiresAt,
-        remarks: payload?.remarks,
+        remarks: payload.remarks,
+        createdBy: tokenPayload.id,
       });
 
       if (isEmpty(createdReservation)) {
         return ResponseHandlerService({
-          status: HttpStatus.BAD_REQUEST,
+          status: HttpStatus.NOT_FOUND,
           success: false,
-          message: RESPONSE_MESSAGES.ERROR.INTERNAL_SERVER_ERROR,
+          message: RESPONSE_MESSAGES.ERROR.VALIDATION_FAILED,
         });
       }
 
       return ResponseHandlerService({
-        status: HttpStatus.CREATED,
+        status: HttpStatus.OK,
         success: true,
         message: RESPONSE_MESSAGES.SUCCESS.CREATED,
       });
@@ -140,20 +160,64 @@ export class ReservationsService {
     }
   }
 
-  public async deleteById(reservationId: string): Promise<ResponseHandlerI> {
-    const methodName = this.deleteById.name;
+  public async updateById(
+    reservationId: string,
+    payload: UpdateByIdDTO,
+    tokenPayload: TokenPayloadI,
+  ): Promise<ResponseHandlerI> {
+    const methodName = this.updateById.name;
     try {
-      const deletedReservation = await this.reservation.deleteOne({
-        _id: reservationId,
-      });
+      // const userRole = tokenPayload.role ?? "client"
 
-      if (isEmpty(deletedReservation.deletedCount === 0)) {
+      const updatedReservation = await this.reservation.findOneAndUpdate(
+        {
+          _id: reservationId,
+        },
+        {
+          ...(payload.agentId ? { agentId: payload.agentId } : {}),
+          ...(payload.status ? { status: payload.status } : {}),
+          ...(payload.remarks ? { remarks: payload.remarks } : {}),
+        },
+      );
+
+      if (isEmpty(updatedReservation)) {
         return ResponseHandlerService({
           status: HttpStatus.NOT_FOUND,
           success: false,
           message: RESPONSE_MESSAGES.ERROR.NOT_FOUND,
         });
       }
+
+      return ResponseHandlerService({
+        status: HttpStatus.OK,
+        success: true,
+        message: RESPONSE_MESSAGES.SUCCESS.UPDATED,
+      });
+    } catch (error: unknown) {
+      return ResponseHandlerService({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        success: false,
+        message: RESPONSE_MESSAGES.ERROR.INTERNAL_SERVER_ERROR,
+        errorDetails: {
+          name: `${this.serviceName}.${methodName}`,
+          error,
+        },
+      });
+    }
+  }
+
+  public async deleteByIds(reservationIds: string): Promise<ResponseHandlerI> {
+    const methodName = this.deleteByIds.name;
+    try {
+      const selectedIds = reservationIds?.split(",");
+
+      this.reservation
+        .deleteMany({
+          _id: {
+            $in: selectedIds,
+          },
+        })
+        .then();
 
       return ResponseHandlerService({
         status: HttpStatus.OK,

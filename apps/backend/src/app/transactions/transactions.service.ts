@@ -223,7 +223,7 @@ export class TransactionsService {
   ): Promise<ResponseHandlerI> {
     const methodName = this.hardDeleteById.name;
     try {
-      const deletedTransaction = await this.transaction.deleteOne({
+      const deletedTransaction = await this.transaction.deleteMany({
         _id: transactionId,
       });
 

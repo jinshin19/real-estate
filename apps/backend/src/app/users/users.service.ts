@@ -235,7 +235,7 @@ export class UsersService {
       const selectedIds = userIds?.split(",");
 
       this.user
-        .deleteOne({
+        .deleteMany({
           _id: {
             $in: selectedIds,
           },
