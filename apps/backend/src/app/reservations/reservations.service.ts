@@ -9,6 +9,9 @@ import {
   Reservation,
   PaginationU,
   RemoveRootIdU,
+  // Schemas
+  RLUsersCN,
+  RLPropertiesCN,
   // Constants
   RESPONSE_MESSAGES,
   // Interfaces
@@ -41,6 +44,41 @@ export class ReservationsService {
         $match: {
           ...(queries.status !== "all" ? { status: queries.status } : {}),
         },
+      });
+
+      aggregateQuery.push({
+        $lookup: {
+          from: RLUsersCN,
+          localField: "agentId",
+          foreignField: "_id",
+          as: "agent",
+          pipeline: [
+            ...RemoveRootIdU(),
+            {
+              $project: {
+                password: 0,
+              },
+            },
+          ],
+        },
+      });
+
+      aggregateQuery.push({
+        $unwind: "$agent",
+      });
+
+      aggregateQuery.push({
+        $lookup: {
+          from: RLPropertiesCN,
+          localField: "propertyId",
+          foreignField: "_id",
+          as: "property",
+          pipeline: [...RemoveRootIdU()],
+        },
+      });
+
+      aggregateQuery.push({
+        $unwind: "$property",
       });
 
       aggregateQuery.push(...RemoveRootIdU());
@@ -84,9 +122,41 @@ export class ReservationsService {
     try {
       // const userRole = tokenPayload.role ?? "client";
 
-      const reservation = await this.reservation.findOne({
-        _id: reservationId,
-      });
+      const [reservation] = await this.reservation.aggregate([
+        { $match: { _id: reservationId } },
+        {
+          $lookup: {
+            from: RLUsersCN,
+            localField: "agentId",
+            foreignField: "_id",
+            as: "agent",
+            pipeline: [
+              ...RemoveRootIdU(),
+              {
+                $project: {
+                  password: 0,
+                },
+              },
+            ],
+          },
+        },
+        {
+          $unwind: "$agent",
+        },
+        {
+          $lookup: {
+            from: RLPropertiesCN,
+            localField: "propertyId",
+            foreignField: "_id",
+            as: "property",
+            pipeline: [...RemoveRootIdU()],
+          },
+        },
+        {
+          $unwind: "$property",
+        },
+        ...RemoveRootIdU(),
+      ]);
 
       if (isEmpty(reservation)) {
         return ResponseHandlerService({
