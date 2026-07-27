@@ -4,12 +4,6 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/backend-e2e"
-    },
-    {
-      "path": "./apps/backend"
-    },
-    {
       "path": "./apps/frontend-e2e"
     },
     {
@@ -17,6 +11,12 @@
     },
     {
       "path": "./shared"
+    },
+    {
+      "path": "./apps/servers/app-e2e"
+    },
+    {
+      "path": "./apps/servers/app"
     }
   ]
 }

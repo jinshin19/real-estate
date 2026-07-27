@@ -48,9 +48,13 @@
     "ulidx": "^2.4.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
     "@nx/devkit": "23.0.1",
+    "@nx/eslint": "23.0.1",
+    "@nx/eslint-plugin": "23.0.1",
+    "@nx/jest": "23.0.1",
     "@nx/js": "23.0.1",
     "@nx/nest": "23.0.1",
     "@nx/next": "^23.0.1",
@@ -64,24 +68,36 @@
     "@swc/cli": "~0.8.0",
     "@swc/core": "~1.15.5",
     "@swc/helpers": "~0.5.18",
+    "@swc/jest": "~0.2.38",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/helmet": "^0.0.48",
+    "@types/jest": "~30.0.0",
     "@types/lodash": "^4.17.24",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^10.0.0",
+    "jest": "~30.3.0",
+    "jest-environment-node": "~30.3.0",
+    "jest-util": "~30.3.0",
     "nx": "23.0.1",
     "tailwindcss": "^4.3.3",
+    "ts-jest": "^29.4.0",
+    "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
+    "typescript-eslint": "^8.40.0",
     "webpack": "^5.101.3",
     "webpack-cli": "^7.0.0",
     "webpack-dev-server": "^5.2.1"
   },
   "workspaces": [
     "apps/*",
-    "shared"
+    "shared",
+    "apps/servers/*",
+    "apps/clients/*"
   ]
 }

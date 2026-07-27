@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
     "noEmit": true,
@@ -30,8 +30,8 @@
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
-    "../../apps/frontend/.next/types/**/*.ts",
-    "../../dist/apps/frontend/.next/types/**/*.ts",
+    "../../../apps/frontend/.next/types/**/*.ts",
+    "../../../dist/apps/frontend/.next/types/**/*.ts",
     "next-env.d.ts",
     "global.css.d.ts"
   ],
@@ -47,7 +47,7 @@
   ],
   "references": [
     {
-      "path": "../../shared"
+      "path": "../../../shared"
     }
   ]
 }

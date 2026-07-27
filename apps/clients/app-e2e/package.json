@@ -4,7 +4,8 @@
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@crud1/frontend"
-    ]
+      "app-fe"
+    ],
+    "name": "app-fe-e2e"
   }
 }
