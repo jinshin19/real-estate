@@ -1,30 +1,5 @@
-// Utils
-export * from "./lib/utils/index.js";
+// Frontend
+export * from "./lib/frontend/index.js";
 
-// Types
-export * from "./lib/types/index.js";
-
-// Guards
-export * from "./lib/guards/index.js";
-
-// Services
-export * from "./lib/services/index.js";
-
-// Constants
-export * from "./lib/constants/index.js";
-
-// Interfaces
-export * from "./lib/interfaces/index.js";
-
-// Decorators
-export * from "./lib/decorators/index.js";
-
-// Schema
-export * from "./lib/schema/user/index.js";
-export * from "./lib/schema/property/index.js";
-export * from "./lib/schema/audit-log/index.js";
-export * from "./lib/schema/reservation/index.js";
-export * from "./lib/schema/transactions/index.js";
-
-// Handlers
-export * from "./lib/handlers/response.handler.js";
+// Backend
+export * from "./lib/backend/index.js";

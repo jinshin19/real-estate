@@ -1,0 +1,434 @@
+# Project Rules for nx-crud1
+
+## Project Overview
+
+This is an Nx monorepo (v23) containing:
+
+- **Backend**: NestJS API (`apps/backend`)
+- **Frontend**: Next.js application (`apps/frontend`)
+- **Shared**: Common library for types, schemas, guards, utilities (`shared`)
+
+## TypeScript Conventions
+
+- Use **strict mode** (enabled in tsconfig)
+- Use **NodeNext** module resolution
+- **Always use explicit `.js` extensions** in relative imports within the shared library (required by NodeNext)
+  - Example: `import { something } from "./utils.js"`
+  - This applies to `shared/src/**` internal imports only
+- Avoid `any` unless matching existing utility patterns or unavoidable
+- Prefer interfaces for data shapes, types for unions/intersections
+
+## Backend (NestJS) Conventions
+
+### Project Structure
+
+- Follow the pattern: `apps/backend/src/app/{domain}/{domain}.module.ts|controller.ts|service.ts`
+- Each domain should have a module, controller, and service
+- Controllers handle HTTP concerns; services handle business logic
+
+### Controllers
+
+- Use NestJS decorators: `@Controller()`, `@Post()`, `@Get()`, `@Put()`, `@Delete()`
+- Apply guards: `@UseGuards(AuthGuard, RolesGuard, PermissionsGuard)`
+- Use custom decorators from shared: `@Roles()`, `@Permissions()`
+- Inject services via constructor
+- Delegate all business logic to services
+- Return service responses directly (services return `ResponseHandlerI`)
+
+### Services
+
+- Inject dependencies via constructor (MongoDB models, other services, ResponseHandlerService)
+- **Always use `ResponseHandlerService`** for responses:
+  - Success: `this.responseHandler.successHandler()`
+  - Error: `this.responseHandler.errorHandler()`
+- **Error handling pattern**: In catch blocks, always include:
+  ```typescript
+  errorDetails: {
+    name: `${ServiceName}.${methodName}`,
+    // other error fields
+  }
+  ```
+- Use MongoDB `lean()` for read-only queries to improve performance
+- Use transactions for multi-document operations when data consistency is critical
+
+### DTOs and Validation
+
+- Use class-based DTOs with `nestjs-joi` decorators
+- Import decorators: `JoiSchema`, `JoiSchemaOptions`, `getTypeSchema`, `ApiProperty`
+- Validation decorators should match schema fields
+- Example pattern:
+  ```typescript
+  export class CreateExampleDto {
+    @JoiSchema(["CREATE", "UPDATE"])
+    @JoiSchemaOptions({ presence: "required" })
+    @ApiProperty()
+    fieldName: string;
+  }
+  ```
+
+### Import Grouping Style
+
+Organize imports with comment headers in this order:
+
+1. `// NestJs Imports` - NestJS core modules
+2. `// Shared` - Shared library imports
+3. `// Schema` - Mongoose schemas
+4. `// DTO's` - Data transfer objects
+5. `// Types` - Type definitions
+6. Other domain-specific groupings as needed
+
+Use **double quotes** for all imports.
+
+## Shared Library Conventions
+
+### Public API Exports
+
+The shared library exposes **three subpath entrypoints** to prevent bundling platform-specific code into the wrong environment:
+
+| Entrypoint               | Use in               | What it contains                                |
+| ------------------------ | -------------------- | ----------------------------------------------- |
+| `@crud1/shared/frontend` | Next.js / browser    | `CnU`, UI utilities, design tokens              |
+| `@crud1/shared/backend`  | NestJS / Node.js     | Guards, schemas, decorators, services, handlers |
+| `@crud1/shared` (root)   | Tooling / isomorphic | Everything (avoid in apps)                      |
+
+**Rules:**
+
+- **Frontend** (`apps/frontend/**`) **MUST** import from `@crud1/shared/frontend`
+  - ✅ `import { CnU } from "@crud1/shared/frontend"`
+  - ❌ `import { CnU } from "@crud1/shared"` — pulls NestJS/Express into the browser bundle
+- **Backend** (`apps/backend/**`) **MUST** import from `@crud1/shared/backend`
+  - ✅ `import { AuthGuard } from "@crud1/shared/backend"`
+  - ❌ `import { AuthGuard } from "@crud1/shared"`
+- Do NOT import directly from `shared/src/lib/*` in apps — always use the package entrypoints
+
+### Internal Structure
+
+- **Utils**: `shared/src/lib/utils/**` - utility functions, grouped by concern
+- **Types**: `shared/src/lib/types/**` - TypeScript type definitions
+- **Interfaces**: `shared/src/lib/interfaces/**` - interface definitions
+- **Guards**: `shared/src/lib/guards/**` - NestJS guards (auth, roles, permissions)
+- **Decorators**: `shared/src/lib/decorators/**` - custom decorators
+- **Services**: `shared/src/lib/services/**` - shared services (e.g., JWT)
+- **Constants**: `shared/src/lib/constants/**` - constant values, roles, permissions
+- **Schema**: `shared/src/lib/schema/**` - Mongoose schemas organized by domain
+- **Handlers**: `shared/src/lib/handlers/**` - response handlers
+
+### Re-export Pattern
+
+Each subdirectory should have an `index.ts` that re-exports its contents:
+
+```typescript
+export * from "./file1.js";
+export * from "./file2.js";
+```
+
+## Mongoose Schema Conventions
+
+- Schemas live in `shared/src/lib/schema/{domain}/`
+- Use `@Prop()` decorator for schema fields
+- Use `SchemaFactory.createForClass()` to create the schema
+- Default `created_by` and `updated_by` to `SYSTEM_ID` constant
+- Include timestamps: `{ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }`
+- Export both the class and the schema:
+  ```typescript
+  export class Example {
+    @Prop()
+    field: string;
+  }
+  export const ExampleSchema = SchemaFactory.createForClass(Example);
+  ```
+
+## Response and Error Handling
+
+### Response Handler Service
+
+- Always use `ResponseHandlerService` for consistent API responses
+- Success responses:
+  ```typescript
+  return this.responseHandler.successHandler({
+    statusCode: HttpStatus.OK,
+    message: "Success message",
+    data: result,
+  });
+  ```
+- Error responses:
+  ```typescript
+  return this.responseHandler.errorHandler({
+    statusCode: HttpStatus.BAD_REQUEST,
+    message: "Error message",
+    errorDetails: {
+      name: "ServiceName.methodName",
+      error: error.message,
+    },
+  });
+  ```
+
+### Error Metadata Pattern
+
+In service catch blocks, use this naming convention:
+
+```typescript
+catch (error) {
+  return this.responseHandler.errorHandler({
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+    message: RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR,
+    errorDetails: {
+      name: `${ServiceName}.${methodName}`,
+      error: error.message
+    }
+  });
+}
+```
+
+## Authentication and Authorization
+
+### Guards
+
+Apply guards in this order:
+
+1. `@UseGuards(AuthGuard)` - validates JWT token
+2. `@UseGuards(RolesGuard)` - checks user role
+3. `@UseGuards(PermissionsGuard)` - checks specific permissions
+
+### Decorators
+
+- `@Roles(ROLES.ADMIN, ROLES.AGENT)` - specify allowed roles
+- `@Permissions(PERMISSIONS.CREATE_PROPERTY)` - specify required permissions
+- Use constants from shared library, never hardcode role/permission strings
+
+## Quality and Development Practices
+
+### Before Committing Code
+
+- Run type checking: `npm run type-check` (if available)
+- Run linting: `npm run lint` (if available)
+- Ensure all imports resolve correctly
+- Test affected endpoints manually or with tests
+
+### Code Style
+
+- Use meaningful variable and function names
+- Keep functions focused on a single responsibility
+- Add comments for complex business logic
+- Use TypeScript's type system to catch errors at compile time
+
+### Dependencies
+
+- **Do not introduce new npm packages** without explicit approval
+- Use existing patterns and libraries already in the project
+- Check `package.json` for available dependencies before suggesting new ones
+
+### Performance Considerations
+
+- Use `.lean()` for Mongoose queries that don't need full document instances
+- Use `.select()` to limit returned fields when not all data is needed
+- Consider indexing for frequently queried fields
+- Use aggregation pipelines for complex queries
+
+## Common Patterns
+
+### Service Constructor Injection
+
+```typescript
+constructor(
+  @InjectModel(ModelName.name) private modelNameModel: Model<ModelName>,
+  private responseHandler: ResponseHandlerService
+) {}
+```
+
+### Controller Method Pattern
+
+```typescript
+@Post()
+@UseGuards(AuthGuard, RolesGuard)
+@Roles(ROLES.ADMIN)
+async create(@Body(JoiPipe) dto: CreateDto) {
+  return this.service.create(dto);
+}
+```
+
+### Service Method Pattern
+
+```typescript
+async methodName(dto: CreateDto): Promise<ResponseHandlerI> {
+  try {
+    // Business logic
+    const result = await this.model.create(dto);
+
+    return this.responseHandler.successHandler({
+      statusCode: HttpStatus.CREATED,
+      message: 'Created successfully',
+      data: result
+    });
+  } catch (error) {
+    return this.responseHandler.errorHandler({
+      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR,
+      errorDetails: {
+        name: 'ServiceName.methodName',
+        error: error.message
+      }
+    });
+  }
+}
+```
+
+## Notes
+
+- This project uses NestJS for backend, so follow NestJS best practices
+- The shared library is consumed by both backend and frontend
+- Keep domain logic separated and modular
+- Maintain consistency with existing code patterns
+
+---
+
+## Frontend (Next.js) UI Conventions
+
+### UI Component Libraries
+
+This project uses the following UI libraries for the frontend (`apps/frontend`):
+
+- **shadcn/ui pattern** – hand-authored, project-owned primitives in `apps/frontend/src/components/ui/`
+- **Fluent UI React Icons** (`@fluentui/react-icons`) – icon system; always import named icon components
+- **class-variance-authority (cva)** – variant management for component styling
+- **clsx + tailwind-merge** – class merging utility via `cn()` helper
+
+> Do **not** install or use other icon libraries (e.g. react-icons, heroicons, lucide-react) unless explicitly approved. Use `@fluentui/react-icons` throughout.
+
+### Design Tokens
+
+All design tokens are defined in `apps/frontend/src/app/global.css` inside `@theme {}` and map to Tailwind v4 utilities:
+
+| Token           | CSS variable            | Tailwind class     |
+| --------------- | ----------------------- | ------------------ |
+| Page background | `--color-background`    | `bg-background`    |
+| Card / surface  | `--color-surface`       | `bg-surface`       |
+| Hover surface   | `--color-surface-hover` | `bg-surface-hover` |
+| Primary text    | `--color-foreground`    | `text-foreground`  |
+| Muted text      | `--color-muted`         | `text-muted`       |
+| Border          | `--color-border`        | `border-border`    |
+| Focus ring      | `--color-ring`          | `ring-ring`        |
+| Accent          | `--color-accent`        | `bg-accent`        |
+
+> **Never hardcode hex colours** in component JSX or CSS. Always reference the design token utility classes above.
+
+### Border Radius Scale
+
+Use the project radius scale consistently — **do not mix arbitrary values**:
+
+| Size   | Tailwind class | Usage                             |
+| ------ | -------------- | --------------------------------- |
+| Small  | `rounded-lg`   | Chips, small buttons, input icons |
+| Medium | `rounded-xl`   | Inputs, secondary buttons         |
+| Large  | `rounded-2xl`  | Cards, panels, section containers |
+| Full   | `rounded-full` | Pills, avatars, circular buttons  |
+
+### Typography Scale
+
+- Headings: `text-[clamp(32px,3.5vw,52px)]` (responsive, use `clamp`)
+- Body: `text-sm` or `text-base` with `leading-relaxed`
+- Labels/captions: `text-xs` with `uppercase tracking-wide`
+- Font weight: `font-medium` for UI text, `font-semibold` for headings, `font-bold` for display/numbers
+- Letter spacing: `tracking-[-0.06em]` on large headings
+
+### Spacing & Layout
+
+- Max page width: `w-[min(1340px,calc(100%-48px))]` (use the shared `wrap` constant pattern)
+- Section vertical rhythm: `mt-20` to `mt-24` between major sections
+- Card internal padding: `p-5` (sm), `p-6` (md), `p-7`–`p-8` (lg)
+- Gap between grid items: `gap-4` (default), `gap-6` (generous)
+- Do not use arbitrary margin/padding values; use Tailwind spacing scale
+
+### Component Structure (`apps/frontend/src/components/ui/`)
+
+All primitive UI components live in this directory. Current primitives:
+
+- `button.tsx` – `Button` with `variant` + `size` props (cva)
+- `card.tsx` – `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`
+- `input.tsx` – `Input` (styled text input)
+- `badge.tsx` – `Badge` with `variant` + `size` props (cva)
+
+**When adding a new primitive:**
+
+1. Create it in `apps/frontend/src/components/ui/{name}.tsx`
+2. Use `cva` for variants and `cn()` for class merging
+3. Use `React.forwardRef` where the element needs a ref
+4. Follow the existing variant/size naming conventions
+5. Export from the file directly (no barrel index.ts needed for UI primitives)
+
+### `cn()` Utility
+
+Always use the `cn()` helper for conditional/merged classNames:
+
+```tsx
+// Shared
+import {
+  // Utils
+  CnU,
+} from "@crud1/shared/frontend";
+
+// Good
+<div className={CnU("base-class", condition && "conditional-class", className)} />
+
+// Bad – string concatenation
+<div className={"base-class " + (condition ? "conditional-class" : "")} />
+```
+
+### Icons (Fluent UI)
+
+- Import directly from `@fluentui/react-icons`
+- Use the `Regular` variant by default; `Filled` only for active/selected states
+- Size icons with Tailwind: `className="h-4 w-4"` (16px), `h-5 w-5` (20px)
+- Never set `width`/`height` as HTML attributes on Fluent icons — use className only
+
+```tsx
+// Good
+import { HomeRegular, ArrowUpRightRegular } from "@fluentui/react-icons";
+<HomeRegular className="h-4 w-4 text-muted" />;
+
+// Bad
+import { FaHome } from "react-icons/fa";
+<FaHome width={16} height={16} />;
+```
+
+### Button Usage
+
+```tsx
+// Primary action
+<Button variant="default" size="default">Save</Button>
+
+// Pill shape (rounded-full)
+<Button variant="default" size="pill">Book Now <ArrowUpRightRegular className="h-4 w-4" /></Button>
+
+// Icon-only
+<Button variant="outline" size="icon" aria-label="Filter">
+  <FilterRegular className="h-4 w-4" />
+</Button>
+
+// Ghost / subtle
+<Button variant="ghost" size="icon-sm" aria-label="Menu">
+  <GridRegular className="h-4 w-4" />
+</Button>
+```
+
+### Responsive Breakpoints
+
+Use Tailwind v4 arbitrary breakpoints with `max-[...]` for mobile-first overrides:
+
+- `max-[720px]:` – small/mobile
+- `max-[1100px]:` – tablet / medium
+- Prefer `grid` with `grid-cols-N max-[breakpoint]:grid-cols-1` over CSS media query blocks
+
+### Accessibility
+
+- All icon-only buttons must have `aria-label`
+- Use semantic HTML elements (`<article>`, `<section>`, `<aside>`, `<header>`, `<nav>`)
+- Use `aria-hidden="true"` on decorative images/icons
+- Ensure interactive elements have `:focus-visible` ring (built into Button/Input primitives)
+
+### CSS / Styling Rules
+
+- Tailwind v4 (`@import "tailwindcss"`) – do **not** use `@tailwind base/components/utilities` directives
+- All global resets and base styles live in `apps/frontend/src/app/global.css`
+- Component-level styles use Tailwind utility classes only — no CSS modules or `styled-components`
+- Avoid `style={{}}` prop except for dynamic values that cannot be expressed as Tailwind utilities (e.g. `backgroundImage`)
