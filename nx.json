@@ -3,10 +3,7 @@
   "defaultBase": "master",
   "analytics": false,
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -73,10 +70,7 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": [
-        "apps/servers/my-app-e2e/**/*",
-        "apps/servers/app-e2e/**/*"
-      ]
+      "exclude": ["apps/servers/my-app-e2e/**/*", "apps/servers/app-e2e/**/*"]
     }
   ],
   "generators": {
@@ -87,11 +81,12 @@
       }
     }
   },
+  "sync": {
+    "applyChanges": true
+  },
   "targetDefaults": {
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   }
 }

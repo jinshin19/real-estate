@@ -71,7 +71,7 @@ This is an Nx monorepo (v23) containing:
 Organize imports with comment headers in this order:
 
 1. `// NestJs Imports` - NestJS core modules
-2. `// Shared` - Shared library imports
+2. `// Library` - Shared library imports
 3. `// Schema` - Mongoose schemas
 4. `// DTO's` - Data transfer objects
 5. `// Types` - Type definitions
@@ -361,11 +361,11 @@ All primitive UI components live in this directory. Current primitives:
 Always use the `cn()` helper for conditional/merged classNames:
 
 ```tsx
-// Shared
+// Library
 import {
   // Utils
   CnU,
-} from "@crud1/shared/frontend";
+} from "@clients/library";
 
 // Good
 <div className={CnU("base-class", condition && "conditional-class", className)} />

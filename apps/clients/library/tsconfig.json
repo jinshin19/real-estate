@@ -1,0 +1,70 @@
+{
+  "compilerOptions": {
+    // ==========================
+    // Language
+    // ==========================
+
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+
+    // ==========================
+    // Modules
+    // ==========================
+
+    // Next.js uses ESM and a bundler.
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+
+    // ==========================
+    // JSX
+    // ==========================
+
+    "jsx": "preserve",
+
+    // ==========================
+    // Type Checking
+    // ==========================
+
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+
+    // ==========================
+    // Module Interop
+    // ==========================
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // ==========================
+    // Helpers
+    // ==========================
+
+    "importHelpers": true,
+    "isolatedModules": true,
+
+    // ==========================
+    // Project References
+    // ==========================
+
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmitOnError": true
+
+    // ==========================
+    // Paths
+    // ==========================
+
+    // "rootDir": "./src",
+    // "outDir": "./dist"
+  },
+
+  "include": ["src/**/*"],
+
+  "exclude": ["dist", "node_modules", "**/*.spec.ts", "**/*.test.ts"]
+}

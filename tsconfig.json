@@ -4,19 +4,10 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/frontend-e2e"
-    },
-    {
-      "path": "./apps/frontend"
-    },
-    {
-      "path": "./apps/servers/app-e2e"
-    },
-    {
-      "path": "./apps/servers/app"
-    },
-    {
       "path": "./apps/servers/library"
+    },
+    {
+      "path": "./apps/clients/library"
     }
   ]
 }

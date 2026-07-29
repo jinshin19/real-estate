@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // NextJs Imports
 import {
@@ -18,65 +18,65 @@ import {
   ChevronDownRegular,
   ArrowUpRightRegular,
   CheckmarkCircleRegular,
-} from "@fluentui/react-icons";
+} from '@fluentui/react-icons';
 // Component
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-// Shared
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+// Library
 import {
   // Utils
   CnU,
-} from "@crud1/shared/frontend";
+} from '@clients/library';
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
 const heroImages = [
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=80",
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80',
+  'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=700&q=80',
+  'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=80',
 ];
 
 const propertyCards = [
   {
-    title: "Villa Pondok Indah",
+    title: 'Villa Pondok Indah',
     image:
-      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=80",
-    price: "$840 – $950",
+      'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=80',
+    price: '$840 – $950',
     active: false,
   },
   {
-    title: "Villa Pondok Tanjung",
+    title: 'Villa Pondok Tanjung',
     image:
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=700&q=80",
-    price: "$840 – $950",
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=700&q=80',
+    price: '$840 – $950',
     active: true,
   },
   {
-    title: "Bali Patriot Residence",
+    title: 'Bali Patriot Residence',
     image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=700&q=80",
-    price: "$840 – $990",
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=700&q=80',
+    price: '$840 – $990',
     active: false,
   },
 ];
 
-const featurePills = ["Cleanliness", "Honest", "Trusted", "Luxury"];
-const navTypeFilters = ["All", "House", "Residential", "Apartment"];
+const featurePills = ['Cleanliness', 'Honest', 'Trusted', 'Luxury'];
+const navTypeFilters = ['All', 'House', 'Residential', 'Apartment'];
 const rentalPeriods = [
-  "Long term rent",
-  "Short term rent",
-  "WPA",
-  "Nota 19",
-  "Expatriate",
-  "Samsiyang",
+  'Long term rent',
+  'Short term rent',
+  'WPA',
+  'Nota 19',
+  'Expatriate',
+  'Samsiyang',
 ];
 
 // ─── Layout helpers ─────────────────────────────────────────────────────────
 
 const wrap =
-  "mx-auto w-[min(1340px,calc(100%-48px))] max-[720px]:w-[min(calc(100%-24px),1340px)]";
+  'mx-auto w-[min(1340px,calc(100%-48px))] max-[720px]:w-[min(calc(100%-24px),1340px)]';
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -93,10 +93,10 @@ function NavLink({
     <a
       href={href}
       className={CnU(
-        "flex items-center gap-1 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-150",
+        'flex items-center gap-1 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-150',
         active
-          ? "bg-foreground text-background"
-          : "text-foreground/70 hover:bg-surface-hover hover:text-foreground",
+          ? 'bg-foreground text-background'
+          : 'text-foreground/70 hover:bg-surface-hover hover:text-foreground',
       )}
     >
       {children}
@@ -114,7 +114,7 @@ function SectionTitle({
   return (
     <h2
       className={CnU(
-        "text-[clamp(32px,3.5vw,52px)] font-semibold leading-[1.05] tracking-[-0.06em]",
+        'text-[clamp(32px,3.5vw,52px)] font-semibold leading-[1.05] tracking-[-0.06em]',
         className,
       )}
     >
@@ -127,10 +127,10 @@ function PropertyCard({ card }: { card: (typeof propertyCards)[number] }) {
   return (
     <article
       className={CnU(
-        "flex flex-col rounded-2xl p-3 transition-shadow duration-200",
+        'flex flex-col rounded-2xl p-3 transition-shadow duration-200',
         card.active
-          ? "bg-foreground text-background shadow-elevated"
-          : "bg-surface border border-border hover:shadow-float",
+          ? 'bg-foreground text-background shadow-elevated'
+          : 'bg-surface border border-border hover:shadow-float',
       )}
     >
       <div
@@ -141,8 +141,8 @@ function PropertyCard({ card }: { card: (typeof propertyCards)[number] }) {
         <h3 className="text-lg font-semibold leading-tight">{card.title}</h3>
         <p
           className={CnU(
-            "text-[13px] leading-relaxed",
-            card.active ? "text-background/70" : "text-muted",
+            'text-[13px] leading-relaxed',
+            card.active ? 'text-background/70' : 'text-muted',
           )}
         >
           A spacious home with three cozy bedrooms and a harmonious indoor
@@ -151,11 +151,11 @@ function PropertyCard({ card }: { card: (typeof propertyCards)[number] }) {
         <div className="mt-auto flex items-center justify-between pt-4">
           <span className="text-sm font-semibold">{card.price}</span>
           <Button
-            variant={card.active ? "secondary" : "default"}
+            variant={card.active ? 'secondary' : 'default'}
             size="pill-sm"
             className={CnU(
               card.active &&
-                "bg-background/10 text-background border-background/20 hover:bg-background/20",
+                'bg-background/10 text-background border-background/20 hover:bg-background/20',
             )}
           >
             Book Now
@@ -173,7 +173,7 @@ export default function Index() {
   return (
     <main className="min-h-screen bg-background pb-24">
       {/* ══════════ HERO SECTION ══════════ */}
-      <section className={CnU(wrap, "pt-8")}>
+      <section className={CnU(wrap, 'pt-8')}>
         {/* ── Header ── */}
         <header className="flex items-center justify-between gap-4">
           <a
@@ -228,7 +228,7 @@ export default function Index() {
                 className="mx-2 inline-block h-[36px] w-[100px] rounded-full border-2 border-surface bg-cover bg-center align-middle shadow-card"
                 style={{
                   backgroundImage:
-                    "url(https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=260&q=80)",
+                    'url(https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=260&q=80)',
                 }}
                 aria-hidden="true"
               />
@@ -321,10 +321,10 @@ export default function Index() {
                 <span
                   key={item}
                   className={CnU(
-                    "flex-1 py-3 text-xs font-medium transition-colors duration-150",
+                    'flex-1 py-3 text-xs font-medium transition-colors duration-150',
                     item === 2
-                      ? "rounded-lg bg-foreground text-background"
-                      : "text-muted hover:text-foreground",
+                      ? 'rounded-lg bg-foreground text-background'
+                      : 'text-muted hover:text-foreground',
                   )}
                 >
                   {item}
@@ -339,10 +339,10 @@ export default function Index() {
           <div className="grid grid-cols-4 gap-5 max-[1100px]:grid-cols-2 max-[720px]:grid-cols-1">
             {(
               [
-                ["Looking for", "Enter property type", HomeRegular],
-                ["Location", "Search location", LocationRegular],
-                ["Price range", "Min – Max price", MoneyRegular],
-                ["Bedrooms", "Number of bedrooms", BedRegular],
+                ['Looking for', 'Enter property type', HomeRegular],
+                ['Location', 'Search location', LocationRegular],
+                ['Price range', 'Min – Max price', MoneyRegular],
+                ['Bedrooms', 'Number of bedrooms', BedRegular],
               ] as const
             ).map(([label, placeholder, Icon]) => (
               <label key={label} className="flex flex-col gap-2">
@@ -363,15 +363,15 @@ export default function Index() {
           <div className="mt-5 flex flex-wrap items-center gap-3 max-[720px]:flex-col max-[720px]:items-stretch">
             {/* Buy/Sell/Rent toggle */}
             <div className="flex rounded-full bg-surface-hover p-1">
-              {["Buy", "Sell", "Rent"].map((tab, i) => (
+              {['Buy', 'Sell', 'Rent'].map((tab, i) => (
                 <button
                   key={tab}
                   type="button"
                   className={CnU(
-                    "rounded-full px-5 py-2 text-sm font-medium transition-colors duration-150",
+                    'rounded-full px-5 py-2 text-sm font-medium transition-colors duration-150',
                     i === 0
-                      ? "bg-foreground text-background"
-                      : "text-muted hover:text-foreground",
+                      ? 'bg-foreground text-background'
+                      : 'text-muted hover:text-foreground',
                   )}
                 >
                   {tab}
@@ -392,10 +392,10 @@ export default function Index() {
                   key={filter}
                   type="button"
                   className={CnU(
-                    "rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150",
+                    'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
                     i === 0
-                      ? "bg-foreground text-background"
-                      : "text-muted hover:text-foreground hover:bg-surface-hover",
+                      ? 'bg-foreground text-background'
+                      : 'text-muted hover:text-foreground hover:bg-surface-hover',
                   )}
                 >
                   {filter}
@@ -420,7 +420,7 @@ export default function Index() {
       <section
         className={CnU(
           wrap,
-          "mt-24 flex items-stretch gap-6 max-[1100px]:flex-col",
+          'mt-24 flex items-stretch gap-6 max-[1100px]:flex-col',
         )}
         id="services"
       >
@@ -433,7 +433,7 @@ export default function Index() {
                 className="mx-2 inline-block h-[28px] w-[70px] rounded-full border-2 border-surface bg-cover bg-center align-middle shadow-card"
                 style={{
                   backgroundImage:
-                    "url(https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=260&q=80)",
+                    'url(https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=260&q=80)',
                 }}
                 aria-hidden="true"
               />
@@ -469,16 +469,16 @@ export default function Index() {
           <div className="mt-6 grid grid-cols-3 gap-4 max-[720px]:grid-cols-1">
             {[
               {
-                q: "Can I sell my home?",
-                a: "Absolutely. We offer listing support, home valuation, and full agent assistance.",
+                q: 'Can I sell my home?',
+                a: 'Absolutely. We offer listing support, home valuation, and full agent assistance.',
               },
               {
-                q: "How do I rent a property?",
-                a: "Browse listings, contact an agent, and schedule a viewing in just a few clicks.",
+                q: 'How do I rent a property?',
+                a: 'Browse listings, contact an agent, and schedule a viewing in just a few clicks.',
               },
               {
-                q: "Is my data secure?",
-                a: "Yes. We use industry-standard encryption and never sell your personal data.",
+                q: 'Is my data secure?',
+                a: 'Yes. We use industry-standard encryption and never sell your personal data.',
               },
             ].map(({ q, a }) => (
               <article
@@ -539,7 +539,7 @@ export default function Index() {
       <section
         className={CnU(
           wrap,
-          "mt-24 rounded-2xl bg-surface px-10 py-12 shadow-card max-[720px]:px-5 max-[720px]:py-7",
+          'mt-24 rounded-2xl bg-surface px-10 py-12 shadow-card max-[720px]:px-5 max-[720px]:py-7',
         )}
         id="properties"
       >
@@ -567,15 +567,15 @@ export default function Index() {
 
             {/* Buy/Sell/Rent */}
             <div className="mt-4 grid grid-cols-3 gap-1">
-              {["Buy", "Sell", "Rent"].map((tab, i) => (
+              {['Buy', 'Sell', 'Rent'].map((tab, i) => (
                 <button
                   key={tab}
                   type="button"
                   className={CnU(
-                    "rounded-full py-1.5 text-xs font-medium transition-colors duration-150",
+                    'rounded-full py-1.5 text-xs font-medium transition-colors duration-150',
                     i === 2
-                      ? "bg-foreground text-background"
-                      : "bg-surface text-muted hover:text-foreground",
+                      ? 'bg-foreground text-background'
+                      : 'bg-surface text-muted hover:text-foreground',
                   )}
                 >
                   {tab}
@@ -606,7 +606,7 @@ export default function Index() {
               Bedrooms
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {[1, 2, 3, 4, "5+"].map((item) => (
+              {[1, 2, 3, 4, '5+'].map((item) => (
                 <button
                   key={item}
                   type="button"
@@ -622,7 +622,7 @@ export default function Index() {
               View
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {["Any", "Courtyard", "Street"].map((item) => (
+              {['Any', 'Courtyard', 'Street'].map((item) => (
                 <button
                   key={item}
                   type="button"
@@ -684,7 +684,7 @@ export default function Index() {
       <section
         className={CnU(
           wrap,
-          "mt-20 flex items-center gap-10 rounded-2xl bg-surface-hover p-8 max-[1100px]:flex-col",
+          'mt-20 flex items-center gap-10 rounded-2xl bg-surface-hover p-8 max-[1100px]:flex-col',
         )}
       >
         {/* Map illustration */}
@@ -718,7 +718,7 @@ export default function Index() {
       </section>
 
       {/* ══════════ TESTIMONIALS SECTION ══════════ */}
-      <section className={CnU(wrap, "mt-20")} id="about">
+      <section className={CnU(wrap, 'mt-20')} id="about">
         <div className="flex items-end justify-between gap-4">
           <div>
             <SectionTitle>What Our Clients Say</SectionTitle>
@@ -768,32 +768,32 @@ export default function Index() {
         <div className="mt-4 grid grid-cols-3 gap-4 max-[720px]:grid-cols-1">
           {[
             {
-              name: "Lisa & Marcus T.",
-              role: "Couple Clients",
+              name: 'Lisa & Marcus T.',
+              role: 'Couple Clients',
               dark: true,
             },
-            { name: "Kevin Miller", role: "Investor", dark: false },
-            { name: "Amanda R.", role: "First-time Buyer", dark: false },
+            { name: 'Kevin Miller', role: 'Investor', dark: false },
+            { name: 'Amanda R.', role: 'First-time Buyer', dark: false },
           ].map(({ name, role, dark }) => (
             <article
               key={name}
               className={CnU(
-                "flex flex-col gap-4 rounded-2xl p-6",
+                'flex flex-col gap-4 rounded-2xl p-6',
                 dark
-                  ? "bg-foreground text-background"
-                  : "bg-surface border border-border",
+                  ? 'bg-foreground text-background'
+                  : 'bg-surface border border-border',
               )}
             >
               <HeartRegular
                 className={CnU(
-                  "h-5 w-5",
-                  dark ? "text-background/60" : "text-muted",
+                  'h-5 w-5',
+                  dark ? 'text-background/60' : 'text-muted',
                 )}
               />
               <p
                 className={CnU(
-                  "text-sm leading-relaxed",
-                  dark ? "text-background/80" : "text-muted",
+                  'text-sm leading-relaxed',
+                  dark ? 'text-background/80' : 'text-muted',
                 )}
               >
                 Professional, responsive, and genuinely helpful. They made
@@ -803,8 +803,8 @@ export default function Index() {
                 <strong className="block text-sm font-semibold">{name}</strong>
                 <small
                   className={CnU(
-                    "text-xs",
-                    dark ? "text-background/50" : "text-muted",
+                    'text-xs',
+                    dark ? 'text-background/50' : 'text-muted',
                   )}
                 >
                   {role}

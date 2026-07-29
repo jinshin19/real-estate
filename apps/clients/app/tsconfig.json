@@ -47,7 +47,7 @@
   ],
   "references": [
     {
-      "path": "../../../shared"
+      "path": "../library"
     }
   ]
 }

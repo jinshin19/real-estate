@@ -1,22 +1,20 @@
 {
   "compilerOptions": {
-    // General
     "target": "ES2022",
     "lib": ["ES2022"],
-
-    // Type Safety
     "strict": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-
-    // Interop
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
-    // Shared helpers
-    "importHelpers": true
+    "importHelpers": true,
+    "baseUrl": ".",
+    "paths": {
+      "@clients/library": ["apps/clients/library/src/index.ts"],
+      "@servers/library": ["apps/servers/library/src/index.ts"]
+    }
   }
 }

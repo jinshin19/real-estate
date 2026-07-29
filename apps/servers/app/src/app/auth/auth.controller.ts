@@ -1,7 +1,7 @@
 // NestJs Imports
-import { JoiPipe } from "nestjs-joi";
-import { type Response } from "express";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { JoiPipe } from 'nestjs-joi';
+import { type Response } from 'express';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   Res,
   Get,
@@ -12,38 +12,38 @@ import {
   HttpStatus,
   Controller,
   UseInterceptors,
-} from "@nestjs/common";
+} from '@nestjs/common';
 // DTO's
-import { LoginDTO, RegisterDTO } from "./dto";
+import { LoginDTO, RegisterDTO } from './dto';
 // Modules
-import { AuthService } from "./auth.service";
+import { AuthService } from './auth.service';
 // Library
 import {
   // Decorator
   HttpInterceptor,
-} from "@servers/library";
+} from '@servers/library';
 
 // @ApiBearerAuth("")
-@ApiTags("Auth")
-@Controller("auth")
+@ApiTags('Auth')
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get("refresh")
+  @Get('refresh')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(HttpInterceptor)
-  @ApiOperation({ summary: "Refresh token" })
+  @ApiOperation({ summary: 'Refresh token' })
   public async refresh(
-    @Headers("refresh-token") refreshToken: string,
+    @Headers('refresh-token') refreshToken: string,
     @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.refresh(response, refreshToken);
   }
 
-  @Post("login")
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(HttpInterceptor)
-  @ApiOperation({ summary: "Login user" })
+  @ApiOperation({ summary: 'Login user' })
   public async login(
     @Body(JoiPipe) payload: LoginDTO,
     @Res({ passthrough: true }) response: Response,
@@ -51,10 +51,10 @@ export class AuthController {
     return this.authService.login(response, payload);
   }
 
-  @Post("register")
+  @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(HttpInterceptor)
-  @ApiOperation({ summary: "Register new user" })
+  @ApiOperation({ summary: 'Register new user' })
   public async register(@Body(JoiPipe) payload: RegisterDTO) {
     return this.authService.register(payload);
   }

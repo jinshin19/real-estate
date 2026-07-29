@@ -1,12 +1,13 @@
 // NextJs Imports
-import * as React from "react";
-// Shared
+import * as React from 'react';
+// Library
 import {
   // Utils
   CnU,
-} from "@crud1/shared/frontend";
+} from '@clients/library';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -14,10 +15,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={CnU(
-          "flex h-10 w-full rounded-xl border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted",
-          "transition-colors duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent",
-          "disabled:cursor-not-allowed disabled:opacity-50",
+          'flex h-10 w-full rounded-xl border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted',
+          'transition-colors duration-150',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent',
+          'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         ref={ref}
@@ -26,6 +27,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export { Input };

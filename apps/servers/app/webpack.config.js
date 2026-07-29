@@ -1,5 +1,6 @@
 const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join } = require('path');
+const { IgnorePlugin } = require('webpack');
 
 module.exports = {
   output: {
@@ -15,11 +16,17 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ["./src/assets"],
+      assets: ['./src/assets'],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: false,
       sourceMap: true,
-    })
+      externalDependencies: 'none',
+    }),
+    // Ignore optional NestJS peer dependencies that are not installed
+    new IgnorePlugin({
+      resourceRegExp:
+        /^(@nestjs\/websockets|@nestjs\/microservices|class-validator|class-transformer)(\/.*)?$/,
+    }),
   ],
 };

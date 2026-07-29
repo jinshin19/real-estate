@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "dist",
     "types": ["node"],
-    "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -12,7 +11,9 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -25,5 +26,10 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../library"
+    }
   ]
 }
