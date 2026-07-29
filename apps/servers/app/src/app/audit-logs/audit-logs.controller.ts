@@ -12,11 +12,11 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Decorators
   HttpInterceptor,
-} from "@crud1/shared";
+} from "@servers/library";
 // DTO's
 import { CreateDTO } from "./dto";
 // Modules

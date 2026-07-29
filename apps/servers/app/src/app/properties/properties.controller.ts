@@ -16,7 +16,7 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Contants
   ROLEC,
@@ -31,7 +31,7 @@ import {
   HttpInterceptor,
   // Types
   type TokenPayloadI,
-} from "@crud1/shared";
+} from "@servers/library";
 // Modules
 import { PropertiesService } from "./properties.service";
 // DTO's

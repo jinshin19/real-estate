@@ -1,7 +1,7 @@
 // NestJs Imports
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-// Shared
+// Library
 import {
   // Schema
   User,
@@ -12,7 +12,7 @@ import {
   ClientSchema,
   // Services
   JWTModule,
-} from "@crud1/shared";
+} from "@servers/library";
 // Modules
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";

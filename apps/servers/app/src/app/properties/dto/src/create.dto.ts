@@ -2,7 +2,7 @@
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Constants
   JOI_MESSAGES,
@@ -11,7 +11,7 @@ import {
   type PropertyStatusT,
   type PropertyLocationI,
   type PropertySpecficationI,
-} from "@crud1/shared";
+} from "@servers/library";
 
 export class CreateDTO {
   @JoiSchema(Joi.string().required().label("Title").messages(JOI_MESSAGES))

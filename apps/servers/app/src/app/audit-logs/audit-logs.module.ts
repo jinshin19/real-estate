@@ -4,12 +4,12 @@ import { MongooseModule } from "@nestjs/mongoose";
 // Modules
 import { AuditLogsService } from "./audit-logs.service";
 import { AuditLogsController } from "./audit-logs.controller";
-// Shared
+// Library
 import {
   // Schema
   AuditLogs,
   AuditLogsSchema,
-} from "@crud1/shared";
+} from "@servers/library";
 
 @Module({
   imports: [

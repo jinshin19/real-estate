@@ -4,11 +4,11 @@ import { APP_FILTER } from "@nestjs/core";
 import { ConfigModule } from "@nestjs/config";
 import { Inject, Module, OnModuleInit } from "@nestjs/common";
 import { getConnectionToken, MongooseModule } from "@nestjs/mongoose";
-// Shared
+// Library
 import {
-    // Decorators
-    HttpExceptionFilter
-} from "@crud1/shared";
+  // Decorators
+  HttpExceptionFilter,
+} from "@servers/library";
 // Modules
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";

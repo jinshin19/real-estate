@@ -2,7 +2,7 @@
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   JOI_MESSAGES,
   TransactionStatusC,
@@ -10,7 +10,7 @@ import {
   // Types
   type TransactionTypesT,
   type TransactionStatusT,
-} from "@crud1/shared";
+} from "@servers/library";
 
 export class CreateDTO {
   @JoiSchema(

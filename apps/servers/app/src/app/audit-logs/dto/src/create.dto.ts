@@ -2,13 +2,13 @@
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Constants
   JOI_MESSAGES,
   AuditLogActionsC,
   type AuditLogActionsT,
-} from "@crud1/shared";
+} from "@servers/library";
 
 export class CreateDTO {
   @JoiSchema(Joi.string().required().label("User ID").messages(JOI_MESSAGES))

@@ -4,14 +4,14 @@ import { MongooseModule } from "@nestjs/mongoose";
 // Modules
 import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
-// Shared
+// Library
 import {
   // Services
   JWTModule,
   // Schema
   User,
   UserSchema,
-} from "@crud1/shared";
+} from "@servers/library";
 
 @Module({
   imports: [

@@ -3,7 +3,7 @@ import { isEmpty } from "lodash";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { HttpStatus, Injectable } from "@nestjs/common";
-// Shared
+// Library
 import {
   // Schema
   User,
@@ -17,7 +17,7 @@ import {
   type ResponseHandlerI,
   // Handler
   ResponseHandlerService,
-} from "@crud1/shared";
+} from "@servers/library";
 // DTO's
 import { QueriesDTO, UpdateByIdDTO } from "./dto";
 

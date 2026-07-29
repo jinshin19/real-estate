@@ -2,14 +2,14 @@
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Constants
   JOI_MESSAGES,
   PropertyStatusC,
   // Types
   type PropertyStatusT,
-} from "@crud1/shared";
+} from "@servers/library";
 
 export class QueriesDTO {
   @JoiSchema(

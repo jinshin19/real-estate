@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { type Response } from "express";
 import { InjectModel } from "@nestjs/mongoose";
 import { HttpStatus, Injectable } from "@nestjs/common";
-// Shared
+// Library
 import {
   // Schema
   User,
@@ -23,7 +23,7 @@ import {
   ResponseHandlerService,
   SetRolePermissionsU,
   SetRolePermissionsT,
-} from "@crud1/shared";
+} from "@servers/library";
 // DTO's
 import { LoginDTO, RegisterDTO } from "./dto";
 

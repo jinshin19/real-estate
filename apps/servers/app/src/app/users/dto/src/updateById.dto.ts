@@ -5,7 +5,7 @@ const UpdateByIdActionC = ["update", "remove"] as const;
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Types
   type UserRolesT,
@@ -14,7 +14,7 @@ import {
   UserRoleSC,
   UserGenderC,
   JOI_MESSAGES,
-} from "@crud1/shared";
+} from "@servers/library";
 
 export class UpdateByIdDTO {
   @JoiSchema(

@@ -2,8 +2,8 @@
 import * as Joi from "joi";
 import { JoiSchema } from "nestjs-joi";
 import { ApiProperty } from "@nestjs/swagger";
-// Shared
-import { JOI_MESSAGES } from "@crud1/shared";
+// Library
+import { JOI_MESSAGES } from "@servers/library";
 
 export class LoginDTO {
   @JoiSchema(Joi.string().required().label("Email").messages(JOI_MESSAGES))

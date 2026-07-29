@@ -16,7 +16,7 @@ import {
 } from "@nestjs/common";
 import { JoiPipe } from "nestjs-joi";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-// Shared
+// Library
 import {
   // Cosntants
   ROLEC,
@@ -31,7 +31,7 @@ import {
   PermissionGuard,
   // Types
   type TokenPayloadI,
-} from "@crud1/shared";
+} from "@servers/library";
 // DTO's
 import { CreateDTO, QueriesDTO, UpdateByIdDTO } from "./dto";
 // Modules

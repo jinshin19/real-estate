@@ -4,13 +4,13 @@ import { MongooseModule } from "@nestjs/mongoose";
 // Modules
 import { PropertiesService } from "./properties.service";
 import { PropertiesController } from "./properties.controller";
-// Shared
+// Library
 import {
   JWTModule,
   // Schema
   Property,
   PropertySchema,
-} from "@crud1/shared";
+} from "@servers/library";
 
 @Module({
   imports: [

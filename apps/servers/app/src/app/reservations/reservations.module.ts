@@ -4,14 +4,14 @@ import { MongooseModule } from "@nestjs/mongoose";
 // Modules
 import { ReservationsService } from "./reservations.service";
 import { ReservationsController } from "./reservations.controller";
-// Shared
+// Library
 import {
-    // Services
-    JWTModule,
-    // Schema
-    Reservation,
-    ReservationSchema,
-} from "@crud1/shared";
+  // Services
+  JWTModule,
+  // Schema
+  Reservation,
+  ReservationSchema,
+} from "@servers/library";
 
 @Module({
   imports: [

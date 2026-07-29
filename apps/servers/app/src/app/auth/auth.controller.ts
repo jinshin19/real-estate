@@ -17,11 +17,11 @@ import {
 import { LoginDTO, RegisterDTO } from "./dto";
 // Modules
 import { AuthService } from "./auth.service";
-// Shared
+// Library
 import {
   // Decorator
   HttpInterceptor,
-} from "@crud1/shared";
+} from "@servers/library";
 
 // @ApiBearerAuth("")
 @ApiTags("Auth")
