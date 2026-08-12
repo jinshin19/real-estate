@@ -1,0 +1,65 @@
+<div class="grid grid-cols-4 gap-2">
+  <div class="col-span-3 row-span-4 h-fit relative" (click)="onOpen(0)">
+    <p class="hover:bg-[#0101013f] w-full h-full absolute z-20 rounded-lg cursor-pointer"></p>
+    <div [hlmAspectRatio]="16 / 9.7" class="w-full overflow-hidden">
+      <img
+        ngSrc="{{ images[0] }}"
+        fill
+        alt="Mountain views"
+        class="rounded-lg object-cover hover:bg-[#0101013f]"
+      />
+    </div>
+  </div>
+
+  @for (image of images.slice(0, 4); track image; let i = $index) {
+    @if ($index !== 0) {
+      <div
+        class="col-span-1 relative flex items-center justify-center w-full h-full"
+        (click)="onOpen($index)"
+      >
+        @if ($index === 3) {
+          <p
+            class="absolute z-10 text-[#d2d2d2] hover:text-white text-3xl bg-[#0101013f] hover:bg-[#010101b3] w-full h-full flex items-center justify-center font-semibold cursor-pointer"
+          >
+            + {{ images.length - 4 }}
+          </p>
+        } @else {
+          <p class="hover:bg-[#0101013f] w-full h-full absolute z-20 rounded-lg cursor-pointer"></p>
+        }
+        <div [hlmAspectRatio]="5 / 3" class="w-full max-w-sm overflow-hidden cursor-pointer">
+          <img ngSrc="{{ image }}" fill alt="Mountain views" class="rounded-lg object-cover" />
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Dialog + Carousel -->
+  <hlm-dialog #dialog>
+    <hlm-dialog-content
+      *hlmDialogPortal="let ctx"
+      class="w-screen! max-w-[100vw]! h-screen! flex rounded-none bg-transparent"
+    >
+      <!-- Carousel -->
+      <hlm-carousel
+        class="w-full h-full"
+        [fullHeight]="true"
+        [isCustom]="true"
+        [selectedImageIndex]="selectedImageIndex()"
+      >
+        <hlm-carousel-content class="h-full">
+          @for (item of images; track item) {
+            <hlm-carousel-item class="w-full h-full cursor-grab active:cursor-grabbing">
+              <img [src]="item" alt="" class="w-full h-full object-cover" />
+            </hlm-carousel-item>
+          }
+        </hlm-carousel-content>
+        <div class="absolute right-0 -mt-10">
+          <hlm-carousel-slide-display
+            slideClass="font-semibold text-white"
+            class="mt-1 flex justify-end px-3 p-2 rounded-md bg-[#00000085]"
+          />
+        </div>
+      </hlm-carousel>
+    </hlm-dialog-content>
+  </hlm-dialog>
+</div>

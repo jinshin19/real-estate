@@ -1,0 +1,51 @@
+<div class="flex items-center py-30">
+  <!-- Left -->
+  <div
+    class="flex flex-col flex-1 bg-[linear-gradient(to_right,#ffffff_55%,transparent_85%),url('/real-estate-v2.jpg')] bg-no-repeat bg-position-[140%_center] p-15 rounded-2xl"
+  >
+    <span hlmBadge class="uppercase">find your dream house</span>
+    <p class="font-semibold lg:text-6xl lg:w-140 mb-4">Discover spaces you'll love to live in</p>
+    <p class="lg:w-100 py-2">Find the perfect property that firts your lifestyle.</p>
+    <p>Quality homes. Prime locations. Trusted developers.</p>
+    <!-- Search Component -->
+    <div class="w-[60%] flex items-center gap-2 p-5 shadow rounded-2xl my-5 bg-white">
+      <!-- Input -->
+      <hlm-input-group class="rounded-md py-5">
+        <input hlmInputGroupInput placeholder="Search location, property or keyword..." />
+        <hlm-input-group-addon>
+          <ng-icon name="fluentLocation" />
+        </hlm-input-group-addon>
+      </hlm-input-group>
+      <!-- Select -->
+      <hlm-select [itemToString]="itemToString">
+        <hlm-select-trigger class="w-56 rounded-md py-5">
+          <hlm-select-placeholder>
+            <ng-icon name="lucideHouse" />
+            Property Type
+          </hlm-select-placeholder>
+        </hlm-select-trigger>
+        <hlm-select-content *hlmSelectPortal>
+          <hlm-select-group>
+            <hlm-select-label>Fruits</hlm-select-label>
+            @for (item of items; track item.value) {
+              <hlm-select-item [value]="item.value">{{ item.label }}</hlm-select-item>
+            }
+          </hlm-select-group>
+        </hlm-select-content>
+      </hlm-select>
+      <!-- Button Search -->
+      <button hlmBtn variant="outline" class="rounded-sm bg-[#0d1b2b] text-white px-5 py-5">
+        <ng-icon name="fluentSearch" />
+        <p>Button</p>
+      </button>
+    </div>
+    <!-- Populars -->
+    <div class="flex items-center gap-3">
+      <p class="mr-2">Popular:</p>
+      <span hlmBadge class="capitalize p-3">Townhouse</span>
+      <span hlmBadge class="capitalize p-3">Subdivision</span>
+      <span hlmBadge class="capitalize p-3">condominium</span>
+      <span hlmBadge class="capitalize p-3">Bungalow</span>
+    </div>
+  </div>
+</div>
