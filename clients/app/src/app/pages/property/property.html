@@ -1,5 +1,14 @@
-<div>
+<div class="flex flex-col h-screen">
   <app-property-header />
-  <app-property-sidebar />
-  <app-property-listing />
+
+  <div class="flex flex-1 gap-2">
+    <aside>
+      <app-property-sidebar />
+    </aside>
+
+    <main class="relative min-w-0 flex-1">
+      <app-property-listing />
+      <app-property-pagination />
+    </main>
+  </div>
 </div>

@@ -1,1 +1,190 @@
-<p>property-sidebar works!</p>
+<div hlmSidebarWrapper>
+  <div class="rounded-md">
+    <hlm-sidebar
+      collapsible="icon"
+      side="left"
+      variant="sidebar"
+      [isFixed]="false"
+      sidebarContainerClass="border-none px-1"
+      desktopSidebarClass="bg-transparent"
+    >
+      <div hlmSidebarHeader class="px-3">
+        <h2 class="font-semibold">Search Properties</h2>
+      </div>
+
+      <div hlmSidebarContent class="px-1 gap-0">
+        <!-- Keywords -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Keywords</div>
+            <div hlmSidebarGroupContent>
+              <hlm-input-group class="rounded-md py-5">
+                <hlm-input-group-addon>
+                  <ng-icon name="fluentSearch" />
+                </hlm-input-group-addon>
+                <input hlmInputGroupInput placeholder="Search location, property or keyword..." />
+              </hlm-input-group>
+            </div>
+          </div>
+        </div>
+
+        <!-- Property Type -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Property Type</div>
+            <div hlmSidebarGroupContent>
+              <hlm-select class="w-full">
+                <hlm-select-trigger class="w-full rounded-md">
+                  <hlm-select-placeholder>
+                    <ng-icon name="lucideHouse " />
+                    Select property type
+                  </hlm-select-placeholder>
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content *hlmSelectPortal>
+                  <hlm-select-group>
+                    <hlm-select-label>Fruits</hlm-select-label>
+                    @for (fruit of fruits; track fruit.value) {
+                      <hlm-select-item [value]="fruit">{{ fruit.label }}</hlm-select-item>
+                    }
+                  </hlm-select-group>
+                </hlm-select-content>
+              </hlm-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location | Cities -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Location</div>
+            <div hlmSidebarGroupContent>
+              <hlm-select class="w-full">
+                <hlm-select-trigger class="w-full rounded-md">
+                  <hlm-select-placeholder>
+                    <ng-icon name="fluentLocation  " />
+                    Select city
+                  </hlm-select-placeholder>
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content *hlmSelectPortal>
+                  <hlm-select-group>
+                    <hlm-select-label>Fruits</hlm-select-label>
+                    @for (fruit of fruits; track fruit.value) {
+                      <hlm-select-item [value]="fruit">{{ fruit.label }}</hlm-select-item>
+                    }
+                  </hlm-select-group>
+                </hlm-select-content>
+              </hlm-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bedrooms -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Bedrooms</div>
+            <div hlmSidebarGroupContent>
+              <hlm-select class="w-full">
+                <hlm-select-trigger class="w-full rounded-md">
+                  <hlm-select-placeholder>
+                    <ng-icon name="fluentBed" />
+                    Select city
+                  </hlm-select-placeholder>
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content *hlmSelectPortal>
+                  <hlm-select-group>
+                    <hlm-select-label>Fruits</hlm-select-label>
+                    @for (fruit of fruits; track fruit.value) {
+                      <hlm-select-item [value]="fruit">{{ fruit.label }}</hlm-select-item>
+                    }
+                  </hlm-select-group>
+                </hlm-select-content>
+              </hlm-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bathrooms -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Bathrooms</div>
+            <div hlmSidebarGroupContent>
+              <hlm-select class="w-full">
+                <hlm-select-trigger class="w-full rounded-md">
+                  <hlm-select-placeholder>
+                    <ng-icon name="lucideBath" />
+                    Select city
+                  </hlm-select-placeholder>
+                  <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content *hlmSelectPortal>
+                  <hlm-select-group>
+                    <hlm-select-label>Fruits</hlm-select-label>
+                    @for (fruit of fruits; track fruit.value) {
+                      <hlm-select-item [value]="fruit">{{ fruit.label }}</hlm-select-item>
+                    }
+                  </hlm-select-group>
+                </hlm-select-content>
+              </hlm-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0">Price</div>
+            <div hlmSidebarGroupContent>
+              <div hlmFieldGroup>
+                <div class="grid grid-cols-2 gap-2">
+                  <div hlmField>
+                    <label hlmFieldLabel for="min">Min</label>
+                    <input hlmInput id="min" type="text" placeholder="100" class="rounded-md" />
+                  </div>
+                  <div hlmField>
+                    <label hlmFieldLabel for="max">Max</label>
+                    <input
+                      hlmInput
+                      id="max"
+                      type="text"
+                      placeholder="500,000,000"
+                      class="rounded-md"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Property Status -->
+        <div>
+          <div hlmSidebarGroup>
+            <div hlmSidebarGroupLabel class="text-md px-0 mb-2">Property Status</div>
+            <div hlmSidebarGroupContent>
+              <hlm-radio-group>
+                <div class="flex items-center gap-3">
+                  <hlm-radio value="option-one" inputId="option-one">
+                    <hlm-radio-indicator indicator />
+                  </hlm-radio>
+                  <label hlmLabel for="option-one"> For Sale</label>
+                </div>
+                <div class="flex items-center gap-3">
+                  <hlm-radio value="option-two" inputId="option-two">
+                    <hlm-radio-indicator indicator />
+                  </hlm-radio>
+                  <label hlmLabel for="option-two"> For Rent</label>
+                </div>
+              </hlm-radio-group>
+            </div>
+          </div>
+        </div>
+
+        <!--  -->
+      </div>
+    </hlm-sidebar>
+  </div>
+</div>
+<!-- </div> -->

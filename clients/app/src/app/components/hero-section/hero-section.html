@@ -1,14 +1,16 @@
 <div class="flex items-center py-30">
   <!-- Left -->
   <div
-    class="flex flex-col flex-1 bg-[linear-gradient(to_right,#ffffff_55%,transparent_85%),url('/real-estate-v2.jpg')] bg-no-repeat bg-position-[140%_center] p-15 rounded-2xl"
+    class="flex flex-1 flex-col rounded-2xl p-15 bg-[linear-gradient(to_right,#ffffff_55%,transparent_85%),url('/real-estate-v2.jpg')] bg-no-repeat bg-position-[140%_center] dark:bg-[linear-gradient(to_right,#000000_55%,transparent_85%),url('/real-estate-v2.jpg')]"
   >
     <span hlmBadge class="uppercase">find your dream house</span>
     <p class="font-semibold lg:text-6xl lg:w-140 mb-4">Discover spaces you'll love to live in</p>
     <p class="lg:w-100 py-2">Find the perfect property that firts your lifestyle.</p>
     <p>Quality homes. Prime locations. Trusted developers.</p>
     <!-- Search Component -->
-    <div class="w-[60%] flex items-center gap-2 p-5 shadow rounded-2xl my-5 bg-white">
+    <div
+      class="w-[60%] flex items-center gap-2 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.10)] rounded-2xl my-5 bg-white dark:bg-black"
+    >
       <!-- Input -->
       <hlm-input-group class="rounded-md py-5">
         <input hlmInputGroupInput placeholder="Search location, property or keyword..." />
@@ -34,7 +36,11 @@
         </hlm-select-content>
       </hlm-select>
       <!-- Button Search -->
-      <button hlmBtn variant="outline" class="rounded-sm bg-[#0d1b2b] text-white px-5 py-5">
+      <button
+        hlmBtn
+        variant="outline"
+        class="rounded-sm bg-[#0d1b2b] dark:bg-primary text-primary-foreground px-5 py-5"
+      >
         <ng-icon name="fluentSearch" />
         <p>Button</p>
       </button>

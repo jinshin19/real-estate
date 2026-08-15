@@ -27,7 +27,15 @@
       "spartan-ng/helm/badge": ["./libs/ui/badge/src/index.ts"],
       "spartan-ng/helm/card": ["./libs/ui/card/src/index.ts"],
       "spartan-ng/helm/aspect-ratio": ["./libs/ui/aspect-ratio/src/index.ts"],
-      "spartan-ng/helm/dialog": ["./libs/ui/dialog/src/index.ts"]
+      "spartan-ng/helm/dialog": ["./libs/ui/dialog/src/index.ts"],
+      "spartan-ng/helm/sidebar": ["./libs/ui/sidebar/src/index.ts"],
+      "spartan-ng/helm/sheet": ["./libs/ui/sheet/src/index.ts"],
+      "spartan-ng/helm/skeleton": ["./libs/ui/skeleton/src/index.ts"],
+      "spartan-ng/helm/tooltip": ["./libs/ui/tooltip/src/index.ts"],
+      "spartan-ng/helm/slider": ["./libs/ui/slider/src/index.ts"],
+      "spartan-ng/helm/checkbox": ["./libs/ui/checkbox/src/index.ts"],
+      "spartan-ng/helm/radio-group": ["./libs/ui/radio-group/src/index.ts"],
+      "spartan-ng/helm/pagination": ["./libs/ui/pagination/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

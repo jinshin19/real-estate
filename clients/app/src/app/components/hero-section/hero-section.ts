@@ -5,10 +5,10 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmButtonImports } from 'spartan-ng/helm/button';
 import { HlmFieldImports } from '../../../../libs/ui/field/src';
 import { HlmInputImports } from '../../../../libs/ui/input/src';
+import { HlmBadgeImports } from '../../../../libs/ui/badge/src';
 import { HlmSelectImports } from '../../../../libs/ui/select/src';
 import { fluentLocation, fluentSearch } from '@ng-icons/fluent-ui';
 import { HlmInputGroupImports } from '../../../../libs/ui/input-group/src';
-import { HlmBadgeImports } from '../../../../libs/ui/badge/src';
 
 @Component({
   selector: 'app-hero-section',

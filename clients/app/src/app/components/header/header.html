@@ -1,6 +1,6 @@
 <nav class="flex gap-2 justify-between items-center p-5 h-auto">
   <!-- Logo -->
-  <a href="/" class="flex gap-1 items-center">
+  <a routerLink="/" class="flex gap-1 items-center">
     <ng-icon name="fluentBuildingTownhouse" size="30" />
     <p class="font-semibold text-2xl">RealEstate</p>
   </a>
@@ -9,7 +9,7 @@
   <ul class="flex gap-2 items-center">
     @for (navigationLink of navigationLinks; track navigationLink.label) {
       <li>
-        <a href="{{ navigationLink.url }}" class="px-5 py-2">{{ navigationLink.label }}</a>
+        <a routerLink="{{ navigationLink.url }}" class="px-5 py-2">{{ navigationLink.label }}</a>
       </li>
     }
   </ul>
@@ -20,17 +20,22 @@
         hlmToggleGroupItem
         value="all"
         aria-label="Toggle all"
-        class="cursor-pointer outline-none border-none"
+        class="cursor-pointer outline-none border-none bg-black! text-white!"
+        (click)="switchTheme('dark')"
       >
         <ng-icon name="fluentWeatherSunny" />
       </button>
-      <button hlmToggleGroupItem value="missed" aria-label="Toggle missed" class="cursor-pointer">
+      <button
+        hlmToggleGroupItem
+        value="missed"
+        aria-label="Toggle missed"
+        class="cursor-pointer dark:bg-white dark:text-black"
+        (click)="switchTheme('light')"
+      >
         <ng-icon name="fluentWeatherMoon" />
       </button>
     </hlm-toggle-group>
 
-    <button hlmBtn variant="outline" class="rounded-sm bg-[#0d1b2b] text-white px-5 py-5">
-      Inquire Now
-    </button>
+    <button hlmBtn variant="default" class="rounded-md px-5 py-5">Inquire Now</button>
   </div>
 </nav>

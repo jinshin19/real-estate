@@ -1,1 +1,7 @@
-<p>property-listing works!</p>
+<div class="w-full grid grid-cols-4 gap-4">
+  @for (item of items; track item) {
+    <div class="p-1">
+      <app-card />
+    </div>
+  }
+</div>
