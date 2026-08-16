@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "paths": {
+      // "@library/*": ["./src/app/library/*"],
+      "@api": ["./src/app/api/index"],
+      "spartan-ng/helm/card": ["./libs/ui/card/src/index.ts"],
+      "spartan-ng/helm/utils": ["./libs/ui/utils/src/index.ts"],
+      "spartan-ng/helm/sheet": ["./libs/ui/sheet/src/index.ts"],
+      "spartan-ng/helm/input": ["./libs/ui/input/src/index.ts"],
+      "spartan-ng/helm/button": ["./libs/ui/button/src/index.ts"],
+      "spartan-ng/helm/tooltip": ["./libs/ui/tooltip/src/index.ts"],
+      "spartan-ng/helm/skeleton": ["./libs/ui/skeleton/src/index.ts"],
+      "spartan-ng/helm/separator": ["./libs/ui/separator/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "libs/ui/**/src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}

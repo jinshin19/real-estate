@@ -19,7 +19,9 @@ async function bootstrap() {
   // Variables
   const app = await NestFactory.create(AppModule, {
     bodyParser: true,
-    cors: true,
+    cors: {
+      origin: ['http://localhost:4200'],
+    },
   });
   const PORT = process.env.PORT ?? 3000;
   const prefix = 'api/v1';

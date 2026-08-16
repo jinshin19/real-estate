@@ -54,7 +54,7 @@ export class AuthService {
         return ResponseHandlerService({
           status: HttpStatus.BAD_REQUEST,
           success: false,
-          message: RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
+          message: RESPONSE_MESSAGES.ERROR.VALIDATION_FAILED,
         });
       }
 
@@ -64,7 +64,7 @@ export class AuthService {
         return ResponseHandlerService({
           status: HttpStatus.BAD_REQUEST,
           success: false,
-          message: RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
+          message: RESPONSE_MESSAGES.ERROR.VALIDATION_FAILED,
         });
       }
 

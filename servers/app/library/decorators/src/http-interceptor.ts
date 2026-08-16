@@ -36,8 +36,6 @@ export class HttpInterceptor implements NestInterceptor {
 
     const accessToken = ExtractAccessTokenU(request);
 
-    console.log('accessToken', accessToken);
-
     if (accessToken) {
       const user = ExtractUserU(accessToken);
       headers['token-payload'] = user;
