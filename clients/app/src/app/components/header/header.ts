@@ -33,7 +33,9 @@ export class Header {
   protected readonly switchTheme = (mode: ModeT) => {
     if (mode === 'light') {
       document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
     } else {
+      document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
     }
   };

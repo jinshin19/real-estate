@@ -1,7 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+// Angular Imports
 import { lucidePanelLeft } from '@ng-icons/lucide';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  fluentArrowLeft,
+  fluentArrowRight,
+  fluentIosArrowRtl,
+  fluentIosArrowLtr,
+} from '@ng-icons/fluent-ui';
 import { HlmButton, provideBrnButtonConfig } from 'spartan-ng/helm/button';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+//
 import { HlmSidebarService } from './hlm-sidebar.service';
 
 @Component({
@@ -9,7 +17,13 @@ import { HlmSidebarService } from './hlm-sidebar.service';
   selector: 'button[hlmSidebarTrigger]',
   imports: [NgIcon],
   providers: [
-    provideIcons({ lucidePanelLeft }),
+    provideIcons({
+      lucidePanelLeft,
+      fluentArrowLeft,
+      fluentArrowRight,
+      fluentIosArrowRtl,
+      fluentIosArrowLtr,
+    }),
     provideBrnButtonConfig({ variant: 'ghost', size: 'icon-sm' }),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +34,9 @@ import { HlmSidebarService } from './hlm-sidebar.service';
     '(click)': '_onClick()',
   },
   template: `
-    <ng-icon name="lucidePanelLeft" />
+    <button class="bg-muted h-7 w-7 flex items-center justify-center rounded-full cursor-pointer">
+      <ng-icon [name]="_customIcon()" size="14" />
+    </button>
     <span class="sr-only">{{ srOnlyText() }}</span>
   `,
 })
@@ -29,7 +45,16 @@ export class HlmSidebarTrigger {
 
   public readonly srOnlyText = input<string>('Toggle Sidebar');
 
+  // Custom
+  public readonly _customIcon = signal<string>(
+    this._sidebarService.state() === 'expanded' ? 'fluentArrowLeft ' : 'fluentArrowRight ',
+  );
+
   protected _onClick(): void {
+    const state = this._sidebarService.state();
+    this._customIcon.update(() =>
+      state === 'expanded' ? 'fluentArrowRight ' : 'fluentArrowLeft ',
+    );
     this._sidebarService.toggleSidebar();
   }
 }

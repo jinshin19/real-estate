@@ -30,7 +30,7 @@ export class Login {
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (response: any) => {
         if (response.status === 200 && response.success) {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['']);
         }
       },
       error: (error) => {

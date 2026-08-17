@@ -1,0 +1,29 @@
+<div hlmSidebarWrapper>
+  <hlm-sidebar collapsible="icon" variant="floating">
+    <div hlmSidebarContent>
+      <div hlmSidebarGroup>
+        <div hlmSidebarGroupLabel class="uppercase">
+          <p>Jinshin19 Real Estate</p>
+        </div>
+        <div hlmSidebarGroupContent>
+          <ul hlmSidebarMenu>
+            @for (item of _items; track item.title) {
+              <li hlmSidebarMenuItem>
+                <a hlmSidebarMenuButton [routerLink]="item.url" routerLinkActive="active">
+                  <ng-icon [name]="item.icon" />
+                  <span>{{ item.title }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-0 right-0 -mr-2.5 mt-2.5">
+      <button hlmSidebarTrigger _customIcon="fluentArrowRight">
+        <ng-icon />
+      </button>
+      <ng-content />
+    </div>
+  </hlm-sidebar>
+</div>

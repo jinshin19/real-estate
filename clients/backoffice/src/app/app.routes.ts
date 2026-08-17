@@ -1,5 +1,9 @@
+// Angular Imports
 import { Routes } from '@angular/router';
-import { Login } from './auth/login/login';
+// Pages
+import { Login } from './pages/auth/login/login';
+import { Dashboard } from './pages/private/dashboard/dashboard';
+import { PropertyManagement } from './pages/private/property-management/property-management';
 
 export const routes: Routes = [
   // Public Routes
@@ -9,7 +13,19 @@ export const routes: Routes = [
   },
 
   // Private Routes
-  // {
-
-  // }
+  {
+    path: '',
+    component: Dashboard,
+    children: [
+      {
+        path: '',
+        redirectTo: 'property-management',
+        pathMatch: 'full',
+      },
+      {
+        path: 'property-management',
+        component: PropertyManagement,
+      },
+    ],
+  },
 ];

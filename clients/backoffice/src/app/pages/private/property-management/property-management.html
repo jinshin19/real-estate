@@ -1,0 +1,15 @@
+<div class="px-5">
+  <!-- Header -->
+  <app-property-management-header />
+
+  <!-- Filters -->
+  <app-property-management-filters (mode)="onModeChange($event)" />
+
+  <!-- Listing -->
+  <app-property-management-listing [mode]="mode()" />
+
+  <!-- Pagination -->
+  <div class="my-10">
+    <app-property-management-pagination />
+  </div>
+</div>

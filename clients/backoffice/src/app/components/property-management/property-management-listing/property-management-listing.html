@@ -1,0 +1,22 @@
+<div>
+  @if (mode().module === 'property-management' && mode().mode === 'list') {
+    <!-- <app-property-management-card mode="list" /> -->
+    <app-property-management-table>
+      @for (item of items; track $index) {
+        <p>t</p>
+      }
+    </app-property-management-table>
+  } @else if (mode().module === 'property-management' && mode().mode === 'grid') {
+    <div class="grid grid-cols-5 gap-5 px-5">
+      @for (item of items; track $index) {
+        <app-property-management-card mode="grid" />
+      }
+    </div>
+  } @else {
+    <div class="flex flex-col gap-5 px-5">
+      @for (item of items; track $index) {
+        <app-property-management-card mode="list" />
+      }
+    </div>
+  }
+</div>

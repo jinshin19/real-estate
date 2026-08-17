@@ -1,0 +1,53 @@
+@if (mode() === 'list') {
+  <hlm-card
+    class="relative mx-auto w-full max-w-sm pt-0 gap-4 cursor-pointer"
+    [routerLink]="['/properties', 123]"
+  >
+    <div class="relative">
+      <img
+        src="real-estate-v2.jpg"
+        alt="Event cover"
+        class="relative z-20 aspect-video w-full object-cover"
+      />
+      <span hlmBadge class="uppercase absolute left-0 bottom-0 z-20 ml-2 mb-2">Townhouse</span>
+      <span hlmBadge class="uppercase absolute right-0 bottom-0 z-20 mr-2 mb-2">For Sale</span>
+    </div>
+    <hlm-card-header>
+      <h3 hlmCardTitle class="text-[18px]">Modern Townhouse</h3>
+      <p hlmCardDescription class="flex items-center gap-1">
+        <ng-icon name="fluentLocation" size="18" />
+        <span class="font-semibold">Valenzuela City</span>
+      </p>
+    </hlm-card-header>
+    <hlm-card-footer class="font-bold text-[16px]">
+      <p>$ 500,000</p>
+    </hlm-card-footer>
+  </hlm-card>
+}
+
+@if (mode() === 'grid') {
+  <hlm-card
+    class="relative mx-auto w-full max-w-sm pt-0 gap-4 cursor-pointer"
+    [routerLink]="['/properties', 123]"
+  >
+    <div class="relative">
+      <img
+        src="real-estate-v2.jpg"
+        alt="Event cover"
+        class="relative z-20 aspect-video w-full object-cover"
+      />
+      <span hlmBadge class="uppercase absolute left-0 bottom-0 z-20 ml-2 mb-2">Townhouse</span>
+      <span hlmBadge class="uppercase absolute right-0 bottom-0 z-20 mr-2 mb-2">For Sale</span>
+    </div>
+    <hlm-card-header>
+      <h3 hlmCardTitle class="text-[18px]">Modern Townhouse</h3>
+      <p hlmCardDescription class="flex items-center gap-1">
+        <ng-icon name="fluentLocation" size="18" />
+        <span class="font-semibold">Valenzuela City</span>
+      </p>
+    </hlm-card-header>
+    <hlm-card-footer class="font-bold text-[16px]">
+      <p>$ 500,000</p>
+    </hlm-card-footer>
+  </hlm-card>
+}

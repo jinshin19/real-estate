@@ -1,1 +1,26 @@
-<p>header works!</p>
+<header class="flex items-center justify-between py-3 w-full">
+  <p>{{ headerTitle() }}</p>
+
+  <div class="flex items-center gap-5">
+    <hlm-toggle-group variant="default" value="all" class="border rounded-2xl p-0.5">
+      <button
+        hlmToggleGroupItem
+        value="all"
+        aria-label="Toggle all"
+        class="cursor-pointer outline-none border-none bg-black! text-white!"
+        (click)="switchTheme('dark')"
+      >
+        <ng-icon name="fluentWeatherSunny" />
+      </button>
+      <button
+        hlmToggleGroupItem
+        value="missed"
+        aria-label="Toggle missed"
+        class="cursor-pointer dark:bg-white dark:text-black"
+        (click)="switchTheme('light')"
+      >
+        <ng-icon name="fluentWeatherMoon" />
+      </button>
+    </hlm-toggle-group>
+  </div>
+</header>

@@ -1,0 +1,70 @@
+<div hlmTableContainer>
+  <table hlmTable class="w-full">
+    <!-- Header -->
+    <thead hlmTableHeader>
+      <tr hlmTableRow>
+        <!-- Select all -->
+        <th hlmTableHead class="w-12">
+          <hlm-checkbox />
+        </th>
+
+        <th hlmTableHead>Property</th>
+        <th hlmTableHead>Type</th>
+        <th hlmTableHead>Listing</th>
+        <th hlmTableHead>Status</th>
+        <th hlmTableHead>Location</th>
+        <th hlmTableHead class="text-right">Price</th>
+      </tr>
+    </thead>
+
+    <!-- Rows -->
+    <tbody hlmTableBody>
+      @for (property of properties; track property.id) {
+        <tr hlmTableRow>
+          <!-- Checkbox -->
+          <td hlmTableCell>
+            <hlm-checkbox />
+          </td>
+
+          <!-- Property -->
+          <td hlmTableCell>
+            <div class="flex flex-col">
+              <span class="font-medium">
+                {{ property.name }}
+              </span>
+
+              <span class="text-muted-foreground text-sm">
+                {{ property.reference }}
+              </span>
+            </div>
+          </td>
+
+          <!-- Type -->
+          <td hlmTableCell>
+            {{ property.type }}
+          </td>
+
+          <!-- Listing -->
+          <td hlmTableCell>
+            {{ property.listing }}
+          </td>
+
+          <!-- Status -->
+          <td hlmTableCell>
+            {{ property.status }}
+          </td>
+
+          <!-- Location -->
+          <td hlmTableCell>
+            {{ property.location }}
+          </td>
+
+          <!-- Price -->
+          <td hlmTableCell class="text-right font-medium">
+            {{ property.price }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
