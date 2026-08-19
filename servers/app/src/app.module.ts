@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PropertiesModule } from './properties/properties.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { UploadsModule } from './uploads/uploads.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,7 +19,7 @@ import { ReservationsModule } from './reservations/reservations.module';
       // envFilePath: `apps/backend/src/environment/.env.${process.env.NODE_ENV}`,
       envFilePath: `environment/.env.local`,
     }),
-    MongooseModule.forRoot(process.env.CRUD1_DATABASE_CONNECTION_1!),
+    MongooseModule.forRoot(process.env.JINSHIN19_REAL_ESTATE_CONNECTION!),
     // Modules
     AuthModule,
     UsersModule,
@@ -26,6 +27,7 @@ import { ReservationsModule } from './reservations/reservations.module';
     PropertiesModule,
     // TransactionsModule,
     ReservationsModule,
+    UploadsModule,
   ],
   controllers: [],
   providers: [

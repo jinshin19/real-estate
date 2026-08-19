@@ -5,6 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // Schemas
 import {
   PropertyStatusC,
+  type PropertyImagesI,
   type PropertyStatusT,
   type PropertyLocationI,
   type PropertySpecficationI,
@@ -158,8 +159,21 @@ export class UpdateByIdDTO {
       .label('Images')
       .messages(JOI_MESSAGES),
   )
-  @ApiProperty({ example: ['sample1.png', 'sample2.png'] })
-  public readonly images!: string;
+  @ApiProperty({
+    example: [
+      {
+        id: 123,
+        name: 'sample2.png',
+        url: '...',
+      },
+      {
+        id: 123,
+        name: 'sample2.png',
+        url: '...',
+      },
+    ],
+  })
+  public readonly images!: PropertyImagesI[];
 
   @JoiSchema(
     Joi.string()

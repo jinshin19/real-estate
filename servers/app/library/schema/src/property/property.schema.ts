@@ -53,8 +53,8 @@ export class Property {
   @Prop({ type: Object, required: true })
   public readonly location!: PropertyLocationI;
 
-  @Prop({ type: Array, required: true })
-  public readonly images!: string[];
+  @Prop({ type: Array, default: false })
+  public readonly images!: PropertyImagesI[];
 
   @Prop({ type: String, required: true })
   public readonly features!: string;
@@ -67,6 +67,12 @@ export class Property {
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);
+
+export interface PropertyImagesI {
+  id: string;
+  name: string;
+  url: string;
+}
 
 export interface PropertyLocationI {
   country: string;
