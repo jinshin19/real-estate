@@ -1,0 +1,264 @@
+<div class="bg-red-500 w-full flex">
+  <hlm-dialog
+    [state]="createPropertyModalState()"
+    (stateChanged)="createPropertyModalState.set($event)"
+  >
+    <hlm-dialog-content
+      *hlmDialogPortal="let ctx"
+      dialogContentClass="max-h-[90vh] overflow-y-auto"
+    >
+      <hlm-dialog-header>
+        <h3 hlmDialogTitle class="text-xl">Create Property</h3>
+
+        <p hlmDialogDescription>Add your property information and photos.</p>
+      </hlm-dialog-header>
+
+      <section class="space-y-3">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h4 class="text-sm font-semibold">Property Photos</h4>
+
+            <p class="text-sm text-muted-foreground">
+              Add up to 10 photos. The first photo will be your cover image.
+            </p>
+          </div>
+
+          @if (images().length > 0) {
+            <span class="shrink-0 text-xs text-muted-foreground"> {{ images().length }} / 10 </span>
+          }
+        </div>
+
+        <!-- PHOTO GALLERY -->
+        <div class="rounded-xl border bg-muted/20 p-3">
+          <div class="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
+            <!-- Add photos -->
+            @if (images().length < MAX_IMAGES) {
+              <button
+                type="button"
+                (click)="propertyFileInput.click()"
+                class="group relative h-40 w-40 shrink-0 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-background transition hover:border-primary/50 hover:bg-muted/50 flex flex-col items-center justify-center gap-2 cursor-pointer"
+              >
+                <div
+                  class="flex h-9 w-9 items-center justify-center rounded-full border bg-muted/50 transition group-hover:bg-background"
+                >
+                  <ng-icon name="lucidePlus" />
+                </div>
+
+                <span class="text-sm font-medium"> Add photos </span>
+
+                <span class="text-[11px] text-muted-foreground"> JPG, PNG, WEBP </span>
+              </button>
+            }
+
+            <!-- Uploaded images -->
+            @for (image of images(); track image.id; let i = $index) {
+              <div
+                class="group relative h-40 w-40 shrink-0 overflow-hidden rounded-lg bg-muted ring-1 ring-border"
+                [class.ring-2]="i === 0"
+                [class.ring-primary]="i === 0"
+              >
+                <img
+                  [src]="image.previewUrl"
+                  [alt]="'Property photo ' + (i + 1)"
+                  class="h-full w-full object-cover"
+                />
+
+                <!-- Dark overlay on hover -->
+                <div class="absolute inset-0 bg-black/0 transition group-hover:bg-black/20"></div>
+
+                <!-- Remove -->
+                <button
+                  type="button"
+                  (click)="removePropertyImage(i)"
+                  class="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm text-white opacity-0 transition hover:bg-destructive group-hover:opacity-100 cursor-pointer"
+                  aria-label="Remove photo"
+                >
+                  ×
+                </button>
+
+                <!-- Cover badge -->
+                @if (i === 0) {
+                  <span
+                    class="absolute bottom-2 left-2 rounded-md bg-black/65 px-2 py-1 text-[11px] font-medium text-white"
+                  >
+                    Cover photo
+                  </span>
+                }
+
+                <!-- Image number -->
+                <span
+                  class="absolute bottom-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white"
+                >
+                  {{ i + 1 }}
+                </span>
+              </div>
+            }
+          </div>
+
+          <!-- Empty state -->
+          @if (images().length === 0) {
+            <div class="mt-3 text-center">
+              <p class="text-xs text-muted-foreground">
+                You can select one or multiple photos at once.
+              </p>
+            </div>
+          }
+        </div>
+
+        <!-- Hidden file input -->
+        <input
+          #propertyFileInput
+          type="file"
+          class="hidden"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          (change)="onImageSelect($event)"
+        />
+
+        <!-- Error -->
+        @if (propertyImageError()) {
+          <p class="text-sm text-destructive">
+            {{ propertyImageError() }}
+          </p>
+        }
+      </section>
+
+      <section class="mt-8 space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Property Details</h4>
+
+          <p class="text-sm text-muted-foreground">Basic information about the property.</p>
+        </div>
+
+        <hlm-field-group>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <hlm-field>
+              <label hlmFieldLabel for="property-name"> Property Name </label>
+
+              <input
+                hlmInput
+                id="property-name"
+                placeholder="e.g. Modern Family Home"
+                class="rounded-md"
+              />
+            </hlm-field>
+
+            <hlm-field>
+              <label hlmFieldLabel for="property-type"> Property Type </label>
+
+              <input
+                hlmInput
+                id="property-type"
+                placeholder="House, Apartment, Condo..."
+                class="rounded-md"
+              />
+            </hlm-field>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <hlm-field>
+              <label hlmFieldLabel for="bedrooms"> Bedrooms </label>
+
+              <input hlmInput id="bedrooms" type="number" placeholder="3" class="rounded-md" />
+            </hlm-field>
+
+            <hlm-field>
+              <label hlmFieldLabel for="bathrooms"> Bathrooms </label>
+
+              <input hlmInput id="bathrooms" type="number" placeholder="2" class="rounded-md" />
+            </hlm-field>
+
+            <hlm-field>
+              <label hlmFieldLabel for="area"> Floor Area </label>
+
+              <input hlmInput id="area" type="number" placeholder="120" class="rounded-md" />
+            </hlm-field>
+          </div>
+        </hlm-field-group>
+      </section>
+
+      <section class="mt-8 space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Location</h4>
+
+          <p class="text-sm text-muted-foreground">Where is this property located?</p>
+        </div>
+
+        <hlm-field-group>
+          <hlm-field>
+            <label hlmFieldLabel for="address"> Address </label>
+
+            <input hlmInput id="address" placeholder="Street address" class="rounded-md" />
+          </hlm-field>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <hlm-field>
+              <label hlmFieldLabel for="city"> City </label>
+
+              <input hlmInput id="city" placeholder="Manila" class="rounded-md" />
+            </hlm-field>
+
+            <hlm-field>
+              <label hlmFieldLabel for="province"> Province </label>
+
+              <input hlmInput id="province" placeholder="Metro Manila" class="rounded-md" />
+            </hlm-field>
+
+            <hlm-field>
+              <label hlmFieldLabel for="postal"> Postal Code </label>
+
+              <input hlmInput id="postal" placeholder="1000" class="rounded-md" />
+            </hlm-field>
+          </div>
+        </hlm-field-group>
+      </section>
+
+      <section class="mt-8 space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Pricing</h4>
+
+          <p class="text-sm text-muted-foreground">Set the price and listing information.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <hlm-field>
+            <label hlmFieldLabel for="price"> Price </label>
+
+            <input hlmInput id="price" type="number" placeholder="₱ 5,000,000" class="rounded-md" />
+          </hlm-field>
+
+          <hlm-field>
+            <label hlmFieldLabel for="listing-type"> Listing Type </label>
+
+            <input hlmInput id="listing-type" placeholder="For Sale" class="rounded-md" />
+          </hlm-field>
+        </div>
+      </section>
+
+      <section class="mt-8 space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Description</h4>
+        </div>
+
+        <hlm-field>
+          <label hlmFieldLabel for="description"> Property Description </label>
+
+          <textarea
+            hlmInput
+            id="description"
+            rows="5"
+            placeholder="Describe the property..."
+            class="rounded-md"
+          ></textarea>
+        </hlm-field>
+      </section>
+
+      <!-- FOOTER -->
+      <hlm-dialog-footer class="mt-8">
+        <button hlmBtn variant="outline" hlmDialogClose type="button">Cancel</button>
+
+        <button hlmBtn type="submit">Create Listing</button>
+      </hlm-dialog-footer>
+    </hlm-dialog-content>
+  </hlm-dialog>
+</div>

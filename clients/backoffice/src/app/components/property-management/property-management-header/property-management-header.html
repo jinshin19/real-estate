@@ -1,1 +1,11 @@
-<app-header headerTitle="Property Management" />
+<header class="flex items-center w-full gap-5">
+  <div class="flex-1">
+    <app-header headerTitle="Property Management" />
+  </div>
+  <div>
+    <button hlmBtn variant="outline" (click)="onOpen()">
+      <ng-icon name="lucidePlus" />
+      Create Property
+    </button>
+  </div>
+</header>

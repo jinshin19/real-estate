@@ -1,6 +1,9 @@
 <div class="px-5">
+  <!-- Modal -->
+  <app-property-management-modal [(createPropertyModalState)]="createPropertyModalState" />
+
   <!-- Header -->
-  <app-property-management-header />
+  <app-property-management-header (createPropertyModal)="onCreatePropertyModal($event)" />
 
   <!-- Filters -->
   <app-property-management-filters (mode)="onModeChange($event)" />

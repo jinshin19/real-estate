@@ -1,6 +1,5 @@
 const ModeC = ['light', 'dark'] as const;
 
-// Angular Imports
 import { Component, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { fluentWeatherSunny, fluentWeatherMoon } from '@ng-icons/fluent-ui';
