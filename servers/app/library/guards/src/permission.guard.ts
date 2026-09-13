@@ -31,6 +31,8 @@ export class PermissionGuard implements CanActivate {
     const http = context.switchToHttp();
     const request = http.getRequest();
 
+    console.log('PERMISSIONS GUARD');
+
     const token = ExtractAccessTokenU(request);
 
     if (!token) {
@@ -47,6 +49,11 @@ export class PermissionGuard implements CanActivate {
       KEYS.PERMISSIONK,
       context.getHandler(),
     );
+
+    console.log('permissions', {
+      userPermissions,
+      requiredPermission,
+    });
 
     if (!requiredPermission) return false;
 

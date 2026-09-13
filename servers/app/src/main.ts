@@ -21,6 +21,7 @@ async function bootstrap() {
     bodyParser: true,
     cors: {
       origin: ['http://localhost:4200'],
+      credentials: true,
     },
   });
   const PORT = process.env.PORT ?? 3000;

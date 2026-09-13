@@ -45,7 +45,6 @@ export class UploadsService {
       for (const file of files) {
         // Check file size
         if (file.size > MaxFileSizeC) {
-          console.log(file.originalname);
           return ResponseHandlerService({
             status: HttpStatus.BAD_REQUEST,
             success: false,

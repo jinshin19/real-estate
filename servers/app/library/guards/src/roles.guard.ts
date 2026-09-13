@@ -28,6 +28,7 @@ export class RolesGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const http = context.switchToHttp();
     const request = http.getRequest();
+    console.log('ROLES GUARD');
 
     const token = ExtractAccessTokenU(request);
 

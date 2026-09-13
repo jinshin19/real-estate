@@ -257,28 +257,37 @@ export class PropertiesService {
     try {
       const userRole = tokenPayload.role;
 
+      console.log('USER', userRole);
+
       const createdProperty = await this.property.create({
         title: payload.title,
-        description: payload.description,
-        projectId: payload.projectId,
-        houseModelId: payload.houseModelId,
-        price: payload.price,
-        reservationFee: payload.reservationFee,
-        status: userRole === 'agent' ? 'unavailable' : payload.status,
-        isFeatured: userRole === 'agent' ? false : payload.isFeatured,
-        isPublished: userRole === 'agent' ? false : payload.isPublished,
-        location: payload.location,
-        images: payload.images,
-        features: payload.features,
-        specifications: payload.specifications,
+        // description: payload.description,
+        // projectId: payload.projectId,
+        // houseModelId: payload.houseModelId,
+        // price: payload.price,
+        // reservationFee: payload.reservationFee,
+        // status: userRole === 'agent' ? 'unavailable' : payload.status,
+        // isFeatured: userRole === 'agent' ? false : payload.isFeatured,
+        // isPublished: userRole === 'agent' ? false : payload.isPublished,
+        // location: payload.location,
+        // images: payload.images,
+        // features: payload.features,
+        // specifications: payload.specifications,
         createdBy: tokenPayload.id,
       });
 
+      console.log('createdProperty', createdProperty);
+
       if (isEmpty(createdProperty)) {
+        console.log('failed1');
         return ResponseHandlerService({
           status: HttpStatus.BAD_REQUEST,
           success: false,
           message: RESPONSE_MESSAGES.ERROR.INTERNAL_SERVER_ERROR,
+          // errorDetails: {
+          //   name: this.serviceName,
+          //   error
+          // }
         });
       }
 
@@ -289,6 +298,7 @@ export class PropertiesService {
         data: AddRemoveRootIdU(createdProperty.toJSON()),
       });
     } catch (error: unknown) {
+      console.log('failed2', error);
       return ResponseHandlerService({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         success: false,

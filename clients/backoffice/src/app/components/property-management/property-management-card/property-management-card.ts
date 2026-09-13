@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { fluentLocation } from '@ng-icons/fluent-ui';
 // Library
-import { ListingFilterT } from '@library';
+import { ListingFilterT, PropertyI } from '@library';
 // Libs
 import { HlmCardImports, HlmBadgeImports } from '@libs';
 
@@ -20,5 +20,6 @@ import { HlmCardImports, HlmBadgeImports } from '@libs';
   ],
 })
 export class PropertyManagementCard {
+  public property = input.required<PropertyI>();
   public readonly mode = input<ListingFilterT>();
 }

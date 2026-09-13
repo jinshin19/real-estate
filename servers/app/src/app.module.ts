@@ -9,9 +9,9 @@ import { HttpExceptionFilter } from '@library/decorators';
 // Modules
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { PropertiesModule } from './properties/properties.module';
 import { ReservationsModule } from './reservations/reservations.module';
-import { UploadsModule } from './uploads/uploads.module';
 @Module({
   imports: [
     ConfigModule.forRoot({

@@ -1,26 +1,54 @@
 // NestJs Imports
-import { JwtService } from "@nestjs/jwt";
-import { Injectable } from "@nestjs/common";
+import { StringValue } from 'ms';
+import { JwtService } from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common';
+import { KEYS } from '@library/constants';
 
 @Injectable()
 export class JWTService {
   constructor(private readonly jwtService: JwtService) {}
 
-  public generateAccessToken(data: any) {
+  private generateToken(data: any, expiresIn: StringValue) {
     try {
-      const generatedToken = this.generateToken(data, "1m");
+      const token = this.jwtService.sign(data, {
+        expiresIn,
+      });
+      return token;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public generateAccessToken(data: any, expiresIn: StringValue = '1m') {
+    try {
+      const generatedToken = this.generateToken(data, expiresIn);
       return generatedToken;
     } catch (error) {
       return error;
     }
   }
 
-  public generateRefreshToken(data: any) {
+  public generateRefreshToken(data: any, expiresIn: StringValue = '3m') {
     try {
-      const generatedToken = this.generateToken(data, "3m");
+      const generatedToken = this.generateToken(data, expiresIn);
       return generatedToken;
     } catch (error) {
       return error;
+    }
+  }
+
+  public decodeToken(token: string): TokenResponseI {
+    try {
+      const validatedToken = this.jwtService.verify(token, {});
+      return {
+        success: true,
+        data: validatedToken,
+      };
+    } catch (error) {
+      console.log('Decoding token', error);
+      return {
+        success: false,
+      };
     }
   }
 
@@ -38,28 +66,62 @@ export class JWTService {
     }
   }
 
-  public decodeToken(token: string): TokenResponseI {
+  public rotationToken(
+    accessToken: string,
+    refreshToken: string,
+  ): RotationTokenResponseI {
     try {
-      const validatedToken = this.jwtService.verify(token);
-      return {
-        success: true,
-        data: validatedToken,
-      };
-    } catch (error) {
-      return {
-        success: false,
-      };
-    }
-  }
+      if (!accessToken && !refreshToken)
+        return {
+          accessToken: null,
+          isValid: false,
+        };
 
-  private generateToken(data: any, expiresIn: string) {
-    try {
-      const token = this.jwtService.sign(data, {
-        expiresIn: "2m",
-      });
-      return token;
+      if (accessToken && !refreshToken) {
+        const validatedToken = this.validateToken(accessToken);
+
+        if (!validatedToken.success)
+          return { accessToken: null, isValid: false };
+
+        return {
+          accessToken,
+          isValid: true,
+        };
+      }
+
+      if (!accessToken && refreshToken) {
+        const validatedToken = this.validateToken(refreshToken);
+        if (!validatedToken.success) {
+          return {
+            accessToken: null,
+            isValid: false,
+          };
+        }
+
+        delete validatedToken.data?.iat;
+        delete validatedToken.data?.exp;
+
+        const accessToken = this.generateAccessToken(
+          validatedToken.data,
+          KEYS.ACCESSTOKENEXPK as StringValue,
+        ) as string;
+
+        return {
+          accessToken,
+          isValid: true,
+        };
+      }
+
+      return {
+        accessToken,
+        isValid: true,
+      };
     } catch (error) {
-      return error;
+      console.log('JWTService error:', error);
+      return {
+        accessToken: null,
+        isValid: false,
+      };
     }
   }
 }
@@ -68,4 +130,9 @@ interface TokenResponseI {
   success: boolean;
   message?: string;
   data?: any;
+}
+
+interface RotationTokenResponseI {
+  accessToken: string | null;
+  isValid: boolean;
 }

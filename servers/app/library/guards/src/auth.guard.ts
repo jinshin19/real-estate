@@ -9,7 +9,7 @@ import {
 // Services
 import { JWTService } from '../../services';
 // Utils
-import { ExtractAccessTokenU } from '../../utils';
+import { ExtractAccessTokenU, ExtractRefreshTokenU } from '../../utils';
 // Constants
 import { RESPONSE_MESSAGES } from '../../constants/src/response-messages.constants';
 
@@ -22,17 +22,18 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const http = context.switchToHttp();
     const request = http.getRequest();
-    const token = ExtractAccessTokenU(request);
+    const accessToken = ExtractAccessTokenU(request);
+    const refreshToken = ExtractRefreshTokenU(request);
 
-    if (!token) {
-      throw new UnauthorizedException(
-        RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
-      );
-    }
+    const rotationToken = this.jwtService.rotationToken(
+      accessToken!,
+      refreshToken!,
+    );
 
-    const validatedToken = this.jwtService.validateToken(token);
-
-    if (!validatedToken.success) {
+    if (
+      (!rotationToken.accessToken && !rotationToken.isValid) ||
+      !rotationToken.isValid
+    ) {
       throw new UnauthorizedException(
         RESPONSE_MESSAGES.ERROR.PERMISSION_DENIED,
       );

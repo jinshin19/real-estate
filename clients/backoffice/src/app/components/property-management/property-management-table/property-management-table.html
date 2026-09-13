@@ -16,7 +16,7 @@
     </thead>
 
     <tbody hlmTableBody>
-      @for (property of properties; track property.id) {
+      @for (property of properties(); track property.id) {
         <tr hlmTableRow>
           <td hlmTableCell>
             <hlm-checkbox />
@@ -25,21 +25,23 @@
           <td hlmTableCell>
             <div class="flex flex-col">
               <span class="font-medium">
-                {{ property.name }}
+                {{ property.title }}
               </span>
 
               <span class="text-muted-foreground text-sm">
-                {{ property.reference }}
+                {{ property.projectId }}
               </span>
             </div>
           </td>
 
           <td hlmTableCell>
-            {{ property.type }}
+            <!-- {{ property.type }} -->
+            Townhouse
           </td>
 
           <td hlmTableCell>
-            {{ property.listing }}
+            <!-- {{ property.listing }} -->
+            For Sale
           </td>
 
           <td hlmTableCell>
@@ -47,7 +49,7 @@
           </td>
 
           <td hlmTableCell>
-            {{ property.location }}
+            {{ property.location.city }}
           </td>
 
           <td hlmTableCell class="text-right font-medium">

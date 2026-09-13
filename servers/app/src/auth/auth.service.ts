@@ -1,4 +1,5 @@
 // NestJs Imports
+import { StringValue } from 'ms';
 import { Model } from 'mongoose';
 import { isEmpty } from 'lodash';
 import { type Response } from 'express';
@@ -23,7 +24,7 @@ import { JWTService } from '@library/services';
 // Schemas
 import { User, Agent, Client } from '@library/schema';
 // Constants
-import { RESPONSE_MESSAGES } from '@library/constants';
+import { KEYS, RESPONSE_MESSAGES } from '@library/constants';
 
 @Injectable()
 export class AuthService {
@@ -77,15 +78,25 @@ export class AuthService {
         user.role as SetRolePermissionsT,
       );
 
-      const accessToken = this.jwtService.generateAccessToken({
-        ...data,
-        permissions: getRolePermissions || [],
-      });
-      const refreshToken = this.jwtService.generateRefreshToken({
-        id: data.id,
-      });
+      const accessToken = this.jwtService.generateAccessToken(
+        {
+          ...data,
+          permissions: getRolePermissions || [],
+        },
+        KEYS.ACCESSTOKENEXPK as StringValue,
+      );
+      const refreshToken = this.jwtService.generateRefreshToken(
+        {
+          ...data,
+        },
+        KEYS.REFRESHTOKENEXP as StringValue,
+      );
 
-      SetCookieU(response, refreshToken as string);
+      SetCookieU(
+        response,
+        refreshToken as string,
+        Number(KEYS.REFRESHTOKENEXP.replace('m', '')),
+      );
 
       return ResponseHandlerService({
         status: HttpStatus.OK,
