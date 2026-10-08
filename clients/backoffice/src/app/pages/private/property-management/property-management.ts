@@ -1,4 +1,5 @@
 // Angular Imports
+import { BrnDialogState } from '@spartan-ng/brain/dialog';
 import { Component, signal } from '@angular/core';
 // Library
 import { ListingFilterI } from '@library';
@@ -8,7 +9,6 @@ import { PropertyManagementHeader } from '@components/property-management/proper
 import { PropertyManagementListing } from '@components/property-management/property-management-listing/property-management-listing';
 import { PropertyManagementFilters } from '@components/property-management/property-management-filters/property-management-filters';
 import { PropertyManagementPagination } from '@components/property-management/property-management-pagination/property-management-pagination';
-import { BrnDialogState } from '@spartan-ng/brain/dialog';
 
 @Component({
   selector: 'app-property-management',
@@ -19,8 +19,8 @@ import { BrnDialogState } from '@spartan-ng/brain/dialog';
     PropertyManagementFilters,
     PropertyManagementPagination,
   ],
-  templateUrl: './property-management.html',
   styleUrl: './property-management.css',
+  templateUrl: './property-management.html',
 })
 export class PropertyManagement {
   // Listing Filter
@@ -34,6 +34,7 @@ export class PropertyManagement {
   }
 
   // Property Management
+
   protected createPropertyModalState = signal<BrnDialogState>('closed');
   protected onCreatePropertyModal = (state: string) => {
     this.createPropertyModalState.set(state as BrnDialogState);

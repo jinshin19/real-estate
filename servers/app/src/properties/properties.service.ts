@@ -257,8 +257,6 @@ export class PropertiesService {
     try {
       const userRole = tokenPayload.role;
 
-      console.log('USER', userRole);
-
       const createdProperty = await this.property.create({
         title: payload.title,
         // description: payload.description,
@@ -276,18 +274,12 @@ export class PropertiesService {
         createdBy: tokenPayload.id,
       });
 
-      console.log('createdProperty', createdProperty);
-
       if (isEmpty(createdProperty)) {
         console.log('failed1');
         return ResponseHandlerService({
           status: HttpStatus.BAD_REQUEST,
           success: false,
           message: RESPONSE_MESSAGES.ERROR.INTERNAL_SERVER_ERROR,
-          // errorDetails: {
-          //   name: this.serviceName,
-          //   error
-          // }
         });
       }
 

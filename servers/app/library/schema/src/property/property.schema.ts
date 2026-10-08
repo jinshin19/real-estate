@@ -29,19 +29,19 @@ export class Property {
   @Prop({ type: String, default: null })
   public readonly description?: string | null;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, default: null })
   public readonly projectId!: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, default: null })
   public readonly houseModelId!: string;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, default: null })
   public readonly price!: number;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, default: null })
   public readonly reservationFee!: number;
 
-  @Prop({ type: String, enum: PropertyStatusC, required: true })
+  @Prop({ type: String, enum: PropertyStatusC, default: null })
   public readonly status!: PropertyStatusT;
 
   @Prop({ type: Boolean, default: false })
@@ -50,16 +50,16 @@ export class Property {
   @Prop({ type: Boolean, default: false })
   public readonly isPublished!: boolean;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object, default: null })
   public readonly location!: PropertyLocationI;
 
   @Prop({ type: Array, default: false })
   public readonly images!: PropertyImagesI[];
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, default: null })
   public readonly features!: string;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object, default: null })
   public readonly specifications!: PropertySpecficationI;
 
   @Prop({ type: String, required: true })
