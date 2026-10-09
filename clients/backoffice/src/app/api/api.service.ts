@@ -1,11 +1,14 @@
 // Angular Imports
 import { Injectable } from '@angular/core';
-// Libraries
+// Library
 import {
   ApiService,
   AuthPostEndpointsC,
+  UploadPostEndpointsC,
   PropertyGetEndpointsC,
   PropertyPostEndpointsC,
+  PropertyPatchEndpointsC,
+  PropertyDeleteEndpointsC,
 } from '@library';
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +20,11 @@ export class EndpointsService extends ApiService {
     properties: {
       get: PropertyGetEndpointsC,
       post: PropertyPostEndpointsC,
+      patch: PropertyPatchEndpointsC,
+      delete: PropertyDeleteEndpointsC,
+    },
+    uploads: {
+      post: UploadPostEndpointsC,
     },
   };
 }

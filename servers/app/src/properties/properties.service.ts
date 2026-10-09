@@ -265,6 +265,7 @@ export class PropertiesService {
         // price: payload.price,
         // reservationFee: payload.reservationFee,
         // status: userRole === 'agent' ? 'unavailable' : payload.status,
+        status: 'unavailable',
         // isFeatured: userRole === 'agent' ? false : payload.isFeatured,
         // isPublished: userRole === 'agent' ? false : payload.isPublished,
         // location: payload.location,

@@ -9,7 +9,7 @@ import type { ApiPaginatedResponseI, ApiResponseI } from '../../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly defaultOptions: HttpClientCommonOptions = {
+  private readonly defaultOptions: ApiHttpOptionsI = {
     withCredentials: true,
   };
 
@@ -26,6 +26,26 @@ export class ApiService {
         ...this.defaultOptions,
         ...options,
         observe: 'response',
+        responseType: 'json',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .pipe(
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  onGet<T>({ url, options }: ApiRequestI): Observable<ApiResponseI<T>> {
+    const accessToken = GetTokenU({});
+
+    return this.httpClient
+      .get<ApiResponseI<T>>(url, {
+        ...this.defaultOptions,
+        ...options,
+        observe: 'body',
         responseType: 'json',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -56,13 +76,77 @@ export class ApiService {
         }),
       );
   }
+
+  onPostForm<T>({ url, body, options }: OnPostI): Observable<ApiResponseI<T>> {
+    const accessToken = GetTokenU({});
+
+    return this.httpClient
+      .post<ApiResponseI<T>>(url, body, {
+        ...this.defaultOptions,
+        ...options,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .pipe(
+        catchError((error) => {
+          console.log('Error:', error);
+          throw error;
+        }),
+      );
+  }
+
+  onPatch<T>({ url, body, options }: OnPatchI): Observable<ApiResponseI<T>> {
+    const accessToken = GetTokenU({});
+
+    return this.httpClient
+      .patch<ApiResponseI<T>>(url, body, {
+        ...this.defaultOptions,
+        ...options,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .pipe(
+        catchError((error) => {
+          console.log('Error:', error);
+          throw error;
+        }),
+      );
+  }
+
+  onDelete<T>({ url, options }: ApiRequestI): Observable<ApiResponseI<T>> {
+    const accessToken = GetTokenU({});
+
+    return this.httpClient
+      .delete<ApiResponseI<T>>(url, {
+        ...this.defaultOptions,
+        ...options,
+        observe: 'body',
+        responseType: 'json',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .pipe(
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }
+
+type ApiHttpOptionsI = Omit<HttpClientCommonOptions, 'observe' | 'responseType'>;
 
 interface ApiRequestI {
   url: string;
-  options?: HttpClientCommonOptions;
+  options?: ApiHttpOptionsI;
 }
 
 interface OnPostI extends ApiRequestI {
+  body: any;
+}
+
+interface OnPatchI extends ApiRequestI {
   body: any;
 }

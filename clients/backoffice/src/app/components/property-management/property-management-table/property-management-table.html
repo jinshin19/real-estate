@@ -3,7 +3,13 @@
     <thead hlmTableHeader>
       <tr hlmTableRow>
         <th hlmTableHead class="w-12">
-          <hlm-checkbox />
+          <hlm-checkbox
+            class="cursor-pointer"
+            aria-label="Select all"
+            [checked]="allSelected()"
+            [indeterminate]="someSelected() && !allSelected()"
+            (checkedChange)="onToggleAll($event)"
+          />
         </th>
 
         <th hlmTableHead>Property</th>
@@ -12,48 +18,84 @@
         <th hlmTableHead>Status</th>
         <th hlmTableHead>Location</th>
         <th hlmTableHead class="text-right">Price</th>
+        <th hlmTableHead class="text-right">Actions</th>
       </tr>
     </thead>
 
     <tbody hlmTableBody>
       @for (property of properties(); track property.id) {
-        <tr hlmTableRow>
-          <td hlmTableCell>
-            <hlm-checkbox />
+        <tr hlmTableRow class="cursor-pointer" (click)="onView(property)">
+          <td hlmTableCell (click)="$event.stopPropagation()">
+            <hlm-checkbox
+              class="cursor-pointer"
+              [aria-label]="'Select ' + property.title"
+              [checked]="isSelected(property.id)"
+              (checkedChange)="onToggle(property, $event)"
+            />
           </td>
 
           <td hlmTableCell>
-            <div class="flex flex-col">
-              <span class="font-medium">
-                {{ property.title }}
-              </span>
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center gap-2">
+                <span class="font-medium">
+                  {{ property.title }}
+                </span>
+                @if (isUnfinished(property)) {
+                  <span hlmBadge variant="secondary">Unfinished</span>
+                }
+              </div>
 
-              <span class="text-muted-foreground text-sm">
-                {{ property.projectId }}
-              </span>
+              @if (property.projectId) {
+                <span class="text-muted-foreground text-sm">
+                  {{ property.projectId }}
+                </span>
+              }
             </div>
           </td>
 
           <td hlmTableCell>
-            <!-- {{ property.type }} -->
-            Townhouse
+            {{ property.type || '—' }}
+          </td>
+
+          <td hlmTableCell>—</td>
+
+          <td hlmTableCell>
+            {{ property.status || '—' }}
           </td>
 
           <td hlmTableCell>
-            <!-- {{ property.listing }} -->
-            For Sale
-          </td>
-
-          <td hlmTableCell>
-            {{ property.status }}
-          </td>
-
-          <td hlmTableCell>
-            {{ property.location.city }}
+            {{ property.location?.city || '—' }}
           </td>
 
           <td hlmTableCell class="text-right font-medium">
-            {{ property.price }}
+            {{ property.price != null ? property.price : '—' }}
+          </td>
+
+          <td hlmTableCell (click)="$event.stopPropagation()">
+            <div class="flex items-center justify-end gap-1">
+              <button
+                hlmBtn
+                variant="ghost"
+                size="icon-sm"
+                type="button"
+                aria-label="Edit"
+                (click)="onEdit(property)"
+              >
+                <ng-icon name="lucidePencil" />
+              </button>
+              @if (!hasSelection()) {
+                <button
+                  hlmBtn
+                  variant="ghost"
+                  size="icon-sm"
+                  type="button"
+                  aria-label="Delete"
+                  (click)="onDelete(property)"
+                >
+                  <ng-icon name="lucideTrash2" />
+                </button>
+              }
+            </div>
           </td>
         </tr>
       }

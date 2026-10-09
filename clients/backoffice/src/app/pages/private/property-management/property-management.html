@@ -1,18 +1,53 @@
 <div class="px-5">
-  <!-- Modal -->
   <app-property-management-modal [(createPropertyModalState)]="createPropertyModalState" />
 
-  <!-- Header -->
   <app-property-management-header (createPropertyModal)="onCreatePropertyModal($event)" />
 
-  <!-- Filters -->
-  <app-property-management-filters (mode)="onModeChange($event)" />
+  <app-property-management-filters
+    [selectedCount]="selected().length"
+    (mode)="onModeChange($event)"
+    (deleteSelected)="onDeleteSelected()"
+  />
 
-  <!-- Listing -->
-  <app-property-management-listing [mode]="mode()" />
+  <app-property-management-listing
+    [mode]="mode()"
+    [selectedIds]="selectedIds()"
+    (view)="onView($event)"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+    (toggle)="onToggle($event)"
+    (toggleAll)="onToggleAll($event)"
+  />
 
-  <!-- Pagination -->
   <div class="my-10">
     <app-property-management-pagination />
   </div>
+
+  <hlm-dialog [state]="deleteDialogState()" (stateChanged)="deleteDialogState.set($event)">
+    <hlm-dialog-content *hlmDialogPortal="let ctx" dialogContentClass="sm:max-w-md">
+      <hlm-dialog-header>
+        <h3 hlmDialogTitle>{{ deleteTitle() }}</h3>
+        <p hlmDialogDescription>{{ deleteDescription() }}</p>
+      </hlm-dialog-header>
+
+      <ul class="max-h-48 list-disc space-y-1 overflow-y-auto pl-5 text-sm">
+        @for (property of pendingDelete(); track property.id) {
+          <li>{{ property.title || 'Untitled property' }}</li>
+        }
+      </ul>
+
+      <hlm-dialog-footer>
+        <button hlmBtn variant="outline" hlmDialogClose type="button">Cancel</button>
+        <button
+          hlmBtn
+          variant="destructive"
+          type="button"
+          [disabled]="isDeleting()"
+          (click)="onConfirmDelete()"
+        >
+          Delete
+        </button>
+      </hlm-dialog-footer>
+    </hlm-dialog-content>
+  </hlm-dialog>
 </div>

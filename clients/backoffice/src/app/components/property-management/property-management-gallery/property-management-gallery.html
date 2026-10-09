@@ -1,0 +1,78 @@
+<div class="space-y-6">
+  @if (images().length === 0) {
+    <div class="flex h-56 w-full items-center justify-center rounded-xl bg-muted md:h-72">
+      <ng-icon name="lucideImage" class="text-muted-foreground" size="40" />
+    </div>
+  } @else {
+    <button
+      type="button"
+      class="h-56 w-full overflow-hidden rounded-xl bg-muted cursor-pointer md:h-72 lg:h-150"
+      (click)="dialogState.set('open')"
+    >
+      <img
+        [src]="images()[selectedIndex()] || images()[0]"
+        [alt]="alt()"
+        class="h-full w-full object-contain"
+      />
+    </button>
+  }
+
+  @if (images().length > 1 || (editable() && images().length > 0)) {
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      @for (image of images(); track $index; let i = $index) {
+        <div
+          class="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border cursor-pointer"
+          [class.ring-2]="i === selectedIndex()"
+          [class.ring-primary]="i === selectedIndex()"
+          (click)="selectedIndex.set(i)"
+        >
+          <img
+            [src]="image"
+            [alt]="alt() + ' photo ' + (i + 1)"
+            class="h-full w-full object-cover"
+          />
+          @if (editable()) {
+            <button
+              type="button"
+              class="absolute right-2 top-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-black/60 text-sm text-white opacity-0 transition hover:bg-destructive group-hover:opacity-100"
+              aria-label="Remove photo"
+              (click)="remove.emit(i); $event.stopPropagation()"
+            >
+              &times;
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<hlm-dialog [state]="dialogState()" (stateChanged)="dialogState.set($event)">
+  <hlm-dialog-content
+    *hlmDialogPortal="let ctx"
+    dialogContentClass="w-screen! max-w-[100vw]! h-dvh! max-h-dvh overflow-hidden flex gap-0 rounded-none bg-black/90 p-0 shadow-none ring-0"
+  >
+    @if (dialogState() === 'open' && images().length > 0) {
+      <hlm-carousel
+        class="relative h-full min-h-0 w-full [&>.overflow-hidden]:h-full"
+        [options]="{ startIndex: selectedIndex() }"
+      >
+        <hlm-carousel-content class="h-full items-center">
+          @for (image of images(); track $index) {
+            <hlm-carousel-item
+              class="flex h-full w-full items-center justify-center cursor-grab active:cursor-grabbing"
+            >
+              <img [src]="image" [alt]="alt()" class="max-h-[90dvh] max-w-[90vw] object-contain" />
+            </hlm-carousel-item>
+          }
+        </hlm-carousel-content>
+        <div class="absolute right-4 top-16">
+          <hlm-carousel-slide-display
+            slideClass="font-semibold text-white"
+            class="mt-1 flex justify-end rounded-md bg-[#00000085] p-2 px-3"
+          />
+        </div>
+      </hlm-carousel>
+    }
+  </hlm-dialog-content>
+</hlm-dialog>

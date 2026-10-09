@@ -13,8 +13,3 @@ export const CreatePropertyForm = () => {
     }),
   });
 };
-
-export const CreatePropertyDetailsForm = () =>
-  new FormGroup({
-    sample: new FormControl('', { validators: [], nonNullable: false }),
-  });

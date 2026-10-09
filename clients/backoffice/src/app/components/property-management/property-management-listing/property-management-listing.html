@@ -1,15 +1,38 @@
 <div>
   @if (mode().module === 'property-management' && mode().mode === 'list') {
-    <app-property-management-table [properties]="propertyService.properties()" />
+    <app-property-management-table
+      [properties]="propertyService.properties()"
+      [selectedIds]="selectedIds()"
+      (view)="onView($event)"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (toggle)="onToggle($event)"
+      (toggleAll)="onToggleAll($event)"
+    />
   } @else if (mode().module === 'property-management' && mode().mode === 'grid') {
-    <div class="grid grid-cols-5 gap-5">
-      @for (property of propertyService.properties(); track $index) {
-        <app-property-management-card [property]="property" mode="grid" />
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      @for (property of propertyService.properties(); track property.id) {
+        <app-property-management-card
+          [property]="property"
+          mode="grid"
+          [hideDelete]="selectedIds().length > 0"
+          (view)="onView($event)"
+          (edit)="onEdit($event)"
+          (delete)="onDelete($event)"
+        />
       }
     </div>
   } @else {
     <div class="flex flex-col gap-5">
-      <app-property-management-table [properties]="propertyService.properties()" />
+      <app-property-management-table
+        [properties]="propertyService.properties()"
+        [selectedIds]="selectedIds()"
+        (view)="onView($event)"
+        (edit)="onEdit($event)"
+        (delete)="onDelete($event)"
+        (toggle)="onToggle($event)"
+        (toggleAll)="onToggleAll($event)"
+      />
     </div>
   }
 </div>

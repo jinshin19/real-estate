@@ -1,0 +1,114 @@
+<div class="px-5">
+  <header class="flex items-center w-full gap-5">
+    <button hlmBtn variant="ghost" size="icon" type="button" aria-label="Back" (click)="onBack()">
+      <ng-icon name="lucideArrowLeft" />
+    </button>
+    <div class="flex-1">
+      <app-header [headerTitle]="property()?.title || 'Property'" />
+    </div>
+    <button hlmBtn variant="outline" type="button" (click)="onEdit()">
+      <ng-icon name="lucidePencil" />
+      Edit
+    </button>
+  </header>
+
+  @if (property(); as property) {
+    <div class="mt-6 space-y-8 pb-10">
+      <div class="flex items-center gap-2">
+        @if (isUnfinished(property)) {
+          <span hlmBadge variant="secondary">Unfinished</span>
+        }
+      </div>
+
+      <app-property-management-gallery [images]="images()" [alt]="property.title" />
+
+      <section class="space-y-4 mt-5">
+        <div>
+          <h4 class="text-base font-semibold">Property Details</h4>
+          <p class="text-sm text-muted-foreground">Basic information about the property.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Property Name</p>
+            <p class="font-medium">{{ property.title || '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Property Type</p>
+            <p class="font-medium">{{ property.type || '—' }}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Bedrooms</p>
+            <p class="font-medium">{{ property.specifications?.bedrooms ?? '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Status</p>
+            <p class="font-medium">{{ property.status || '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Floor Area</p>
+            <p class="font-medium">{{ property.specifications?.floodArea || '—' }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Location</h4>
+          <p class="text-sm text-muted-foreground">Where is this property located?</p>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-sm text-muted-foreground">Address</p>
+          <p class="flex items-center gap-1 font-medium">
+            <ng-icon name="fluentLocation" size="18" />
+            <span>{{ property.location?.street || '—' }}</span>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">City</p>
+            <p class="font-medium">{{ property.location?.city || '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Province</p>
+            <p class="font-medium">{{ property.location?.province || '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Postal Code</p>
+            <p class="font-medium">{{ property.location?.zipCode || '—' }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Pricing</h4>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Price</p>
+            <p class="font-medium">{{ property.price != null ? property.price : '—' }}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Reservation Fee</p>
+            <p class="font-medium">
+              {{ property.reservationFee != null ? property.reservationFee : '—' }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <div>
+          <h4 class="text-base font-semibold">Description</h4>
+        </div>
+        <p class="text-sm whitespace-pre-wrap">{{ property.description || '—' }}</p>
+      </section>
+    </div>
+  }
+</div>

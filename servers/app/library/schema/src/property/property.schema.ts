@@ -53,7 +53,7 @@ export class Property {
   @Prop({ type: Object, default: null })
   public readonly location!: PropertyLocationI;
 
-  @Prop({ type: Array, default: false })
+  @Prop({ type: Array, default: null })
   public readonly images!: PropertyImagesI[];
 
   @Prop({ type: String, default: null })

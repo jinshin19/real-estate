@@ -61,7 +61,6 @@ export class UploadsService {
           });
         }
       }
-
       await Promise.all(
         files.map(async (file) => {
           const uploadedFile = await this.imageKitService.upload({

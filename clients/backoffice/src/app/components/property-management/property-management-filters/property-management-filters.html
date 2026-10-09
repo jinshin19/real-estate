@@ -1,6 +1,6 @@
-<div class="flex w-full items-center gap-2 px-2 mb-5">
+<div class="mb-5 flex w-full items-center justify-between gap-2 px-2">
   <!-- View Switcher -->
-  <hlm-tabs tab="home">
+  <hlm-tabs tab="list">
     <hlm-tabs-list>
       <button hlmTabsTrigger="list" (click)="onSwitch('list')" class="cursor-pointer">
         <ng-icon name="fluentAppsList" />
@@ -10,4 +10,11 @@
       </button>
     </hlm-tabs-list>
   </hlm-tabs>
+
+  @if (selectedCount() > 0) {
+    <button hlmBtn variant="destructive" class="shrink-0" type="button" (click)="onDeleteSelected()">
+      <ng-icon name="lucideTrash2" />
+      Delete selected
+    </button>
+  }
 </div>

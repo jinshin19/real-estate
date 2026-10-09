@@ -1,26 +1,61 @@
 @if (mode() === 'grid') {
-  <hlm-card
-    class="relative mx-auto w-full max-w-sm pt-0 gap-4 cursor-pointer"
-    [routerLink]="['/properties', 123]"
-  >
+  <hlm-card class="relative w-full cursor-pointer pt-0 gap-4" (click)="onView(property())">
     <div class="relative">
-      <img
-        src="real-estate-v2.jpg"
-        alt="Event cover"
-        class="relative z-20 aspect-video w-full object-cover"
-      />
-      <span hlmBadge class="uppercase absolute left-0 bottom-0 z-20 ml-2 mb-2">Townhouse</span>
-      <span hlmBadge class="uppercase absolute right-0 bottom-0 z-20 mr-2 mb-2">For Sale</span>
+      @if (coverImage(property()); as imageUrl) {
+        <img
+          [src]="imageUrl"
+          [alt]="property().title"
+          class="relative z-20 aspect-video w-full object-contain"
+        />
+      } @else {
+        <div class="relative z-20 flex aspect-video w-full items-center justify-center bg-muted">
+          <ng-icon name="lucideImage" class="text-muted-foreground" size="32" />
+        </div>
+      }
+      @if (isUnfinished(property())) {
+        <span hlmBadge variant="outline" class="absolute left-2 top-2 z-20 bg-background"
+          >Unfinished</span
+        >
+      }
+      @if (property().type) {
+        <span hlmBadge class="uppercase absolute left-0 bottom-0 z-20 ml-2 mb-2">{{
+          property().type
+        }}</span>
+      }
     </div>
     <hlm-card-header>
       <h3 hlmCardTitle class="text-[18px]">{{ property().title }}</h3>
       <p hlmCardDescription class="flex items-center gap-1">
         <ng-icon name="fluentLocation" size="18" />
-        <span class="font-semibold">{{ property().location.city }}</span>
+        <span class="font-semibold">{{ property().location?.city || '—' }}</span>
       </p>
     </hlm-card-header>
-    <hlm-card-footer class="font-bold text-[16px]">
-      <p>{{ property().price }}</p>
+    <hlm-card-footer class="flex items-center justify-between font-bold text-[16px]">
+      <p>{{ property().price != null ? property().price : '—' }}</p>
+      <div class="flex items-center gap-1">
+        <button
+          hlmBtn
+          variant="ghost"
+          size="icon-sm"
+          type="button"
+          aria-label="Edit"
+          (click)="onEdit(property()); $event.stopPropagation()"
+        >
+          <ng-icon name="lucidePencil" />
+        </button>
+        @if (!hideDelete()) {
+          <button
+            hlmBtn
+            variant="ghost"
+            size="icon-sm"
+            type="button"
+            aria-label="Delete"
+            (click)="onDelete(property()); $event.stopPropagation()"
+          >
+            <ng-icon name="lucideTrash2" />
+          </button>
+        }
+      </div>
     </hlm-card-footer>
   </hlm-card>
 }

@@ -1,0 +1,260 @@
+<div class="px-5">
+  <header class="flex items-center w-full gap-5">
+    <button hlmBtn variant="ghost" size="icon" type="button" aria-label="Back" (click)="onBack()">
+      <ng-icon name="lucideArrowLeft" />
+    </button>
+    <div class="flex-1">
+      <app-header headerTitle="Update Property" />
+    </div>
+  </header>
+
+  <form class="mt-6 space-y-8 pb-24" [formGroup]="form">
+    <section class="space-y-4">
+      <div>
+        <h4 class="text-base font-semibold">Property Photos</h4>
+        <p class="text-sm text-muted-foreground">
+          Add up to 10 photos. The first photo will be your cover image.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        <app-property-management-gallery
+          [images]="previewUrls()"
+          [alt]="form.controls.title.value || 'Property'"
+          [editable]="true"
+          (remove)="onRemoveImage($event)"
+        />
+
+        @if (images().length < MAX_IMAGES) {
+          <button
+            type="button"
+            (click)="propertyFileInput.click()"
+            class="group relative flex aspect-square w-full max-w-[160px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-background transition hover:border-primary/50 hover:bg-muted/50"
+          >
+            <div
+              class="flex h-9 w-9 items-center justify-center rounded-full border bg-muted/50 transition group-hover:bg-background"
+            >
+              <ng-icon name="lucidePlus" />
+            </div>
+            <span class="text-sm font-medium">Add photos</span>
+            <span class="text-[11px] text-muted-foreground">JPG, PNG, WEBP</span>
+          </button>
+        }
+      </div>
+
+      <input
+        #propertyFileInput
+        type="file"
+        class="hidden"
+        accept="image/jpeg,image/png,image/webp"
+        multiple
+        (change)="onImageSelect($event)"
+      />
+    </section>
+
+    <section class="space-y-4">
+      <div>
+        <h4 class="text-base font-semibold">Property Details</h4>
+        <p class="text-sm text-muted-foreground">Basic information about the property.</p>
+      </div>
+
+      <hlm-field-group>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <hlm-field>
+            <label hlmFieldLabel for="update-property-name">Property Name</label>
+            <input
+              hlmInput
+              id="update-property-name"
+              placeholder="e.g. Modern Family Home"
+              class="rounded-md"
+              formControlName="title"
+            />
+          </hlm-field>
+          <hlm-field>
+            <label hlmFieldLabel for="update-property-type">Property Type</label>
+            <input
+              hlmInput
+              id="update-property-type"
+              placeholder="House, Apartment, Condo..."
+              class="rounded-md"
+              formControlName="type"
+            />
+          </hlm-field>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <hlm-field>
+            <label hlmFieldLabel for="update-bedrooms">Bedrooms</label>
+            <input
+              hlmInput
+              id="update-bedrooms"
+              type="number"
+              placeholder="3"
+              class="rounded-md"
+              formControlName="bedrooms"
+            />
+          </hlm-field>
+          <hlm-field>
+            <label hlmFieldLabel for="update-bathrooms">Bathrooms</label>
+            <input
+              hlmInput
+              id="update-bathrooms"
+              type="number"
+              placeholder="2"
+              class="rounded-md"
+              formControlName="bathrooms"
+            />
+          </hlm-field>
+          <hlm-field>
+            <label hlmFieldLabel for="update-area">Floor Area</label>
+            <input
+              hlmInput
+              id="update-area"
+              type="number"
+              placeholder="120"
+              class="rounded-md"
+              formControlName="floorArea"
+            />
+          </hlm-field>
+        </div>
+      </hlm-field-group>
+    </section>
+
+    <section class="space-y-4">
+      <div>
+        <h4 class="text-base font-semibold">Location</h4>
+        <p class="text-sm text-muted-foreground">Where is this property located?</p>
+      </div>
+
+      <hlm-field-group>
+        <hlm-field>
+          <label hlmFieldLabel for="update-address">Address</label>
+          <input
+            hlmInput
+            id="update-address"
+            placeholder="Street address"
+            class="rounded-md"
+            formControlName="address"
+          />
+        </hlm-field>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <hlm-field>
+            <label hlmFieldLabel for="update-city">City</label>
+            <input
+              hlmInput
+              id="update-city"
+              placeholder="Manila"
+              class="rounded-md"
+              formControlName="city"
+            />
+          </hlm-field>
+          <hlm-field>
+            <label hlmFieldLabel for="update-province">Province</label>
+            <input
+              hlmInput
+              id="update-province"
+              placeholder="Metro Manila"
+              class="rounded-md"
+              formControlName="province"
+            />
+          </hlm-field>
+          <hlm-field>
+            <label hlmFieldLabel for="update-postal">Postal Code</label>
+            <input
+              hlmInput
+              id="update-postal"
+              placeholder="1000"
+              class="rounded-md"
+              formControlName="postal"
+            />
+          </hlm-field>
+        </div>
+      </hlm-field-group>
+    </section>
+
+    <section class="space-y-4">
+      <div>
+        <h4 class="text-base font-semibold">Pricing</h4>
+        <p class="text-sm text-muted-foreground">Set the price and listing information.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <hlm-field>
+          <label hlmFieldLabel for="update-price">Price</label>
+          <input
+            hlmInput
+            id="update-price"
+            type="number"
+            placeholder="&#8369; 5,000,000"
+            class="rounded-md"
+            formControlName="price"
+          />
+        </hlm-field>
+        <hlm-field>
+          <label hlmFieldLabel for="update-listing-type">Listing Type</label>
+          <input
+            hlmInput
+            id="update-listing-type"
+            placeholder="For Sale"
+            class="rounded-md"
+            formControlName="listingType"
+          />
+        </hlm-field>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div>
+        <h4 class="text-base font-semibold">Description</h4>
+      </div>
+      <hlm-field>
+        <label hlmFieldLabel for="update-description">Property Description</label>
+        <textarea
+          hlmInput
+          id="update-description"
+          rows="5"
+          placeholder="Describe the property..."
+          class="rounded-md"
+          formControlName="description"
+        ></textarea>
+      </hlm-field>
+    </section>
+  </form>
+
+  @if (showSave()) {
+    <div class="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+      <button
+        hlmBtn
+        size="lg"
+        type="button"
+        class="pointer-events-auto min-w-28 shadow-lg"
+        [disabled]="isSaving()"
+        (click)="onSave()"
+      >
+        Save
+      </button>
+    </div>
+  }
+
+  <hlm-dialog [state]="saveDialogState()" (stateChanged)="saveDialogState.set($event)">
+    <hlm-dialog-content *hlmDialogPortal="let ctx" dialogContentClass="sm:max-w-md">
+      <hlm-dialog-header>
+        <h3 hlmDialogTitle>Save changes?</h3>
+        <p hlmDialogDescription>Are you sure you want to save these changes?</p>
+      </hlm-dialog-header>
+
+      <ul class="list-disc space-y-1 pl-5 text-sm">
+        <li>{{ form.controls.title.value || 'Untitled property' }}</li>
+        @if (imagesDirty()) {
+          <li>Property photos</li>
+        }
+      </ul>
+
+      <hlm-dialog-footer>
+        <button hlmBtn variant="outline" hlmDialogClose type="button">Cancel</button>
+        <button hlmBtn type="button" [disabled]="isSaving()" (click)="onConfirmSave()">Save</button>
+      </hlm-dialog-footer>
+    </hlm-dialog-content>
+  </hlm-dialog>
+</div>
